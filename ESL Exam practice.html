@@ -1,0 +1,2752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESL Mastery Quest · Created by Fani</title>
+    <style>
+        /* ========== GLOBAL RESET & THEME ========== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #0b3b5c;
+            --primary-light: #1e6f9f;
+            --accent: #f0a500;
+            --success: #2e8b57;
+            --danger: #c0392b;
+            --bg: #f4f7fb;
+            --card-bg: #ffffff;
+            --text: #1e2b3c;
+            --muted: #4a6178;
+            --border: #d4e0ec;
+            --radius: 1.4rem;
+            --shadow: 0 8px 24px rgba(0, 30, 60, 0.08);
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 1rem;
+            line-height: 1.6;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* ========== LAYOUT ========== */
+        .game-shell {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            box-shadow: 0 25px 50px -12px rgba(0, 20, 40, 0.25);
+            padding: 1.8rem 1.8rem 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        /* ========== HEADER ========== */
+        .brand-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .brand-bar h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .brand-bar .creator-tag {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--muted);
+            background: #eef4fa;
+            padding: 0.3rem 0.9rem;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+        }
+
+        .brand-right {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .student-chip {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            padding: 0.35rem 1rem;
+            border-radius: 30px;
+            box-shadow: 0 6px 14px -8px rgba(11, 59, 92, 0.8);
+            white-space: nowrap;
+        }
+
+        .student-chip strong { font-weight: 800; }
+
+        /* ========== GLOBAL CONTROL BAR ========== */
+        .control-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.8rem 1rem;
+            background: #eaf1f8;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .ctrl-btn {
+            background: white;
+            border: 2px solid var(--border);
+            padding: 0.45rem 1rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-family: inherit;
+        }
+
+        .ctrl-btn:hover {
+            border-color: var(--primary-light);
+            background: #eef6fc;
+        }
+
+        .ctrl-btn.logout-btn {
+            border-color: #f3b8b8;
+            color: var(--danger);
+            background: #fff5f5;
+        }
+
+        .ctrl-btn.logout-btn:hover {
+            background: var(--danger);
+            color: #fff;
+            border-color: var(--danger);
+        }
+
+        /* ========== SCORING RULE NOTICE ========== */
+        .scoring-note {
+            background: #fff8e6;
+            border-left: 5px solid var(--accent);
+            border-radius: 0.9rem;
+            padding: 0.7rem 1rem;
+            font-size: 0.86rem;
+            color: #6b4c00;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .scoring-note strong { color: #4a3400; }
+
+        /* ========== CATEGORY NAVIGATION ========== */
+        .category-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .cat-btn {
+            background: white;
+            border: 2px solid var(--border);
+            padding: 0.6rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .cat-btn:hover {
+            border-color: var(--primary-light);
+            background: #eef6fc;
+        }
+
+        .cat-btn.active {
+            background: var(--primary-light);
+            border-color: var(--primary-light);
+            color: white;
+            box-shadow: 0 8px 16px -6px rgba(30, 111, 159, 0.5);
+        }
+
+        /* ========== PANELS ========== */
+        .panel {
+            display: none;
+            animation: fadeSlide 0.3s ease;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== CARD STYLES ========== */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.6rem 1.8rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 1.2rem 0 0.5rem;
+            color: var(--primary-light);
+            border-left: 4px solid var(--primary-light);
+            padding-left: 0.7rem;
+        }
+
+        .card p, .card li {
+            font-size: 0.98rem;
+            color: var(--text);
+            margin-bottom: 0.4rem;
+        }
+
+        .card ul, .card ol {
+            padding-left: 1.4rem;
+            margin: 0.5rem 0 0.8rem;
+        }
+
+        /* ========== RULE BOX ========== */
+        .rule-box {
+            background: #f0f7ff;
+            padding: 0.9rem 1.2rem;
+            border-radius: 0.9rem;
+            border-left: 5px solid var(--primary-light);
+            margin: 0.9rem 0;
+            font-size: 0.95rem;
+        }
+
+        .rule-box strong { color: var(--primary); }
+
+        /* ========== TABLES ========== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.8rem 0;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: #d9e9f7;
+            color: var(--primary);
+            font-weight: 700;
+            padding: 0.6rem 0.9rem;
+            text-align: left;
+            border-bottom: 2px solid #b3cee5;
+        }
+
+        td {
+            padding: 0.55rem 0.9rem;
+            border-bottom: 1px solid #e1eaf3;
+            vertical-align: top;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        /* ========== EXERCISE BLOCKS ========== */
+        .exercise-block {
+            background: #f9fbfe;
+            border-radius: 1.1rem;
+            padding: 1.1rem 1.3rem;
+            margin: 1rem 0;
+            border: 1.5px dashed #b8d0e7;
+            position: relative;
+        }
+
+        .exercise-block h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .exercise-tools {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .tool-btn {
+            background: #eef4fa;
+            border: 1.5px solid var(--border);
+            padding: 0.25rem 0.7rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.15s;
+            color: var(--primary);
+            font-family: inherit;
+        }
+
+        .tool-btn:hover {
+            background: var(--primary-light);
+            color: white;
+            border-color: var(--primary-light);
+        }
+
+        /* ========== QUESTION ROWS ========== */
+        .q-row {
+            margin-bottom: 0.8rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.4rem 0;
+            border-bottom: 1px dashed #e1eaf3;
+        }
+
+        .q-row:last-child { border-bottom: none; }
+
+        .q-row label {
+            font-weight: 500;
+            min-width: 140px;
+            flex: 1 1 200px;
+            font-size: 0.92rem;
+        }
+
+        select, input[type="text"] {
+            padding: 0.45rem 0.7rem;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+            font-size: 0.9rem;
+            background: white;
+            font-family: inherit;
+            transition: 0.15s;
+            min-width: 130px;
+        }
+
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(30, 111, 159, 0.15);
+        }
+
+        .btn {
+            background: var(--primary-light);
+            color: white;
+            border: none;
+            padding: 0.55rem 1.3rem;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 5px 12px -4px rgba(30, 111, 159, 0.4);
+            margin-top: 0.5rem;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            background: #155a82;
+            transform: translateY(-1px);
+        }
+
+        .btn:active { transform: translateY(0); }
+
+        /* ========== FEEDBACK ========== */
+        .feedback {
+            font-weight: 600;
+            margin-top: 0.5rem;
+            padding: 0.5rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            line-height: 1.45;
+        }
+
+        .feedback:empty { display: none; }
+
+        .feedback.correct {
+            background: #d4f0d4;
+            color: #0a4d0a;
+        }
+
+        .feedback.wrong {
+            background: #ffe0e0;
+            color: #a00;
+        }
+
+        .feedback.partial {
+            background: #fff5d9;
+            color: #7a5a00;
+        }
+
+        .explanation-text {
+            display: block;
+            margin-top: 0.25rem;
+            font-weight: 400;
+            font-size: 0.85rem;
+            color: #333;
+            flex: 1 1 100%;
+        }
+
+        .explanation-text:empty { display: none; }
+
+        .hint-text {
+            display: block;
+            margin-top: 0.25rem;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #1e6f9f;
+            font-style: italic;
+        }
+
+        /* ========== IDIOM GRID ========== */
+        .idiom-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.7rem;
+            margin: 0.8rem 0;
+        }
+
+        .idiom-item {
+            background: #eef6fc;
+            padding: 0.8rem 1rem;
+            border-radius: 0.9rem;
+            border-left: 4px solid var(--primary-light);
+            font-size: 0.9rem;
+        }
+
+        .idiom-item strong { color: var(--primary); }
+
+        /* ========== FOOTER ========== */
+        .copyright-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .copyright-footer strong {
+            color: var(--primary);
+        }
+
+        .lock-notice {
+            display: inline-block;
+            margin-top: 0.3rem;
+            font-size: 0.7rem;
+            background: #fff5d9;
+            padding: 0.15rem 0.6rem;
+            border-radius: 20px;
+            color: #7a5a00;
+        }
+
+        /* ================================================================
+           STUDENT GATE
+           ================================================================ */
+        .student-gate {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: linear-gradient(150deg, #0b3b5c 0%, #1e6f9f 60%, #2a8fc4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.2rem;
+            overflow-y: auto;
+            animation: gateIn 0.35s ease;
+        }
+
+        .student-gate.hidden { display: none; }
+
+        @keyframes gateIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .gate-card {
+            background: #fff;
+            border-radius: 1.6rem;
+            padding: 2rem 2rem 1.5rem;
+            max-width: 740px;
+            width: 100%;
+            box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.55);
+            text-align: center;
+            animation: popIn 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.94) translateY(10px); opacity: 0; }
+            to { transform: none; opacity: 1; }
+        }
+
+        .gate-badge {
+            font-size: 2.6rem;
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+
+        .gate-card h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gate-sub {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--muted);
+            margin-top: 0.15rem;
+        }
+
+        .gate-sub strong { color: var(--primary); }
+
+        .gate-prompt {
+            margin-top: 1.1rem;
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .student-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin: 1.3rem 0 1rem;
+        }
+
+        .student-btn {
+            background: #f4f8fc;
+            border: 2.5px solid var(--border);
+            border-radius: 1.2rem;
+            padding: 1.2rem 0.8rem 1rem;
+            cursor: pointer;
+            transition: 0.18s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.45rem;
+            font-family: inherit;
+        }
+
+        .student-btn:hover {
+            border-color: var(--primary-light);
+            background: #e9f4fc;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 22px -12px rgba(30, 111, 159, 0.6);
+        }
+
+        .student-btn:active { transform: translateY(-1px); }
+
+        .student-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #fff;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            box-shadow: 0 8px 16px -8px rgba(11, 59, 92, 0.7);
+        }
+
+        .student-name {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .student-score {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--muted);
+        }
+
+        .gate-note {
+            font-size: 0.78rem;
+            color: var(--muted);
+            background: #f2f7fc;
+            border-radius: 0.8rem;
+            padding: 0.6rem 0.9rem;
+            margin-top: 0.4rem;
+            line-height: 1.5;
+        }
+
+        .gate-cancel {
+            margin-top: 0.9rem;
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--muted);
+            padding: 0.4rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.15s;
+        }
+
+        .gate-cancel:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .gate-teacher-btn {
+            margin-top: 0.9rem;
+            background: #eef6fc;
+            border: 2px solid #c9def0;
+            color: var(--primary);
+            padding: 0.4rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.15s;
+        }
+
+        .gate-teacher-btn:hover {
+            background: var(--primary-light);
+            color: #fff;
+            border-color: var(--primary-light);
+        }
+
+        /* ---------- Code input styles ---------- */
+        .code-input {
+            width: 100%;
+            max-width: 320px;
+            margin: 0.9rem auto 0.2rem;
+            display: block;
+            padding: 0.8rem 1rem;
+            font-size: 1.1rem;
+            letter-spacing: 0.12em;
+            text-align: center;
+            border: 2.5px solid var(--border);
+            border-radius: 12px;
+            font-family: inherit;
+            text-transform: uppercase;
+            background: #fff;
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 4px rgba(30, 111, 159, 0.15);
+        }
+
+        .code-error {
+            display: none;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-top: 0.55rem;
+            line-height: 1.4;
+        }
+
+        .code-actions {
+            display: flex;
+            gap: 0.6rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .gate-view {
+            animation: fadeSlide 0.25s ease;
+        }
+
+        /* ================================================================
+           TEACHER DASHBOARD MODAL
+           ================================================================ */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 1100;
+            background: rgba(6, 26, 43, 0.75);
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 1.5rem 1rem;
+            overflow-y: auto;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-backdrop.open { display: flex; }
+
+        .modal-card {
+            background: #fff;
+            border-radius: 1.4rem;
+            width: 100%;
+            max-width: 980px;
+            padding: 1.4rem 1.6rem 1.6rem;
+            box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+            animation: popIn 0.28s ease;
+        }
+
+        .modal-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.8rem;
+        }
+
+        .modal-head h2 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .modal-head-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 0 0 auto;
+        }
+
+        .modal-close {
+            background: #eef4fa;
+            border: 2px solid var(--border);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--primary);
+            flex: 0 0 auto;
+            transition: 0.15s;
+            font-family: inherit;
+        }
+
+        .modal-close:hover {
+            background: var(--danger);
+            color: #fff;
+            border-color: var(--danger);
+        }
+
+        .modal-sub {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin: 0.7rem 0 1rem;
+        }
+
+        .modal-foot {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1.2rem;
+        }
+
+        .tool-btn.danger {
+            background: #ffe9e9;
+            border-color: #f3b8b8;
+            color: var(--danger);
+            padding: 0.45rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        .tool-btn.danger:hover {
+            background: var(--danger);
+            color: #fff;
+            border-color: var(--danger);
+        }
+
+        .tool-btn.refresh {
+            background: #eef6fc;
+            border-color: var(--primary-light);
+            color: var(--primary-light);
+            padding: 0.4rem 0.9rem;
+            font-size: 0.78rem;
+        }
+
+        .tool-btn.refresh:hover {
+            background: var(--primary-light);
+            color: #fff;
+        }
+
+        .teacher-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.9rem;
+            margin-bottom: 1.3rem;
+        }
+
+        .tsum-card {
+            display: flex;
+            gap: 0.8rem;
+            align-items: flex-start;
+            background: #f6fafe;
+            border: 1.5px solid var(--border);
+            border-radius: 1rem;
+            padding: 0.9rem 1rem;
+        }
+
+        .tsum-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            color: #fff;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .tsum-info { flex: 1 1 auto; min-width: 0; }
+
+        .tsum-name {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 1rem;
+            line-height: 1.2;
+        }
+
+        .tsum-score {
+            font-size: 0.86rem;
+            font-weight: 800;
+            color: var(--success);
+        }
+
+        .tsum-meta {
+            font-size: 0.73rem;
+            color: var(--muted);
+            line-height: 1.45;
+        }
+
+        .tsum-meta strong { color: var(--primary); }
+
+        .tsum-card .tool-btn { margin-top: 0.4rem; }
+
+        .table-scroll {
+            overflow-x: auto;
+            border-radius: 0.8rem;
+            border: 1px solid var(--border);
+        }
+
+        .table-scroll table { margin: 0; }
+
+        .teacher-table { min-width: 720px; }
+
+        .teacher-table th:not(:first-child),
+        .teacher-table td:not(:first-child) { text-align: center; }
+
+        .cell-empty { color: #9fb0c2; font-size: 0.85rem; }
+
+        .cell-score { white-space: nowrap; }
+
+        .cell-best {
+            display: block;
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        .cell-best.full { color: var(--success); }
+
+        .cell-att {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--muted);
+            margin-top: 1px;
+        }
+
+        .cell-history {
+            display: block;
+            font-size: 0.68rem;
+            color: #8a9bac;
+            margin-top: 2px;
+            cursor: help;
+        }
+
+        /* ========== ACTIVITY FEED ========== */
+        .activity-section {
+            margin-top: 1.2rem;
+        }
+
+        .activity-section h3 {
+            font-size: 0.95rem;
+            color: var(--primary);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .activity-feed {
+            max-height: 260px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 0.8rem;
+            background: #fbfdff;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.5rem 0.8rem;
+            border-bottom: 1px solid #edf3f9;
+            font-size: 0.82rem;
+        }
+
+        .activity-item:last-child { border-bottom: none; }
+
+        .activity-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex: 0 0 auto;
+        }
+
+        .activity-text {
+            flex: 1 1 auto;
+            min-width: 0;
+            line-height: 1.35;
+        }
+
+        .activity-text strong { color: var(--primary); }
+
+        .activity-time {
+            flex: 0 0 auto;
+            font-size: 0.7rem;
+            color: var(--muted);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .activity-empty {
+            padding: 1rem;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        /* ========== TOAST ========== */
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 1.5rem;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--primary);
+            color: #fff;
+            padding: 0.7rem 1.4rem;
+            border-radius: 40px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.25s ease;
+            z-index: 1200;
+            box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.5);
+            max-width: 90vw;
+            text-align: center;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.good { background: var(--success); }
+        .toast.warn { background: #a06c00; }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 650px) {
+            body { padding: 0.6rem; }
+            .game-shell { padding: 1rem; }
+            .brand-bar h1 { font-size: 1.5rem; }
+            .card { padding: 1rem; }
+            .q-row { flex-direction: column; align-items: flex-start; }
+            .q-row label { min-width: 100%; }
+            .gate-card { padding: 1.4rem 1.1rem 1.2rem; }
+            .gate-card h1 { font-size: 1.5rem; }
+            .student-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.7rem; }
+            .student-avatar { width: 52px; height: 52px; font-size: 1.3rem; }
+            .modal-card { padding: 1.1rem 1rem 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ================================================================ -->
+    <!-- STUDENT GATE — name + personal code required                        -->
+    <!-- ================================================================ -->
+    <div class="student-gate" id="studentGate">
+        <div class="gate-card">
+            <!-- Name picker view -->
+            <div id="studentPickView" class="gate-view">
+                <div class="gate-badge">🚀</div>
+                <h1>ESL Mastery Quest</h1>
+                <p class="gate-sub">Created by <strong>Fani</strong></p>
+                <p class="gate-prompt">👋 Who’s practicing today? Tap your name, then enter your personal code.</p>
+                <div class="student-grid" id="studentGrid"></div>
+                <p class="gate-note">🔐 Each student has a private code. Your scores are saved automatically on this device, and every attempt appears in the code-protected <strong>Teacher Dashboard</strong>.</p>
+                <div style="display:flex; gap:0.6rem; justify-content:center; flex-wrap:wrap; align-items:center;">
+                    <button class="gate-cancel" id="gateCancel" onclick="cancelGate()">✕ Cancel</button>
+                    <button class="gate-teacher-btn" onclick="requestTeacherAccess()">👩‍🏫 Teacher Dashboard</button>
+                </div>
+            </div>
+
+            <!-- Code entry view -->
+            <div id="studentCodeView" class="gate-view" style="display:none;">
+                <div class="gate-badge">🔑</div>
+                <h1 style="font-size:1.5rem;">Private Access</h1>
+                <p class="gate-prompt" id="studentCodePrompt">Enter your code</p>
+                <input id="studentCodeInput" class="code-input" type="password" autocomplete="off" placeholder="• • • • • •" aria-label="Student code">
+                <div id="studentCodeError" class="code-error"></div>
+                <div class="code-actions">
+                    <button class="gate-cancel" style="margin-top:0;" onclick="backToStudentPick()">← Back</button>
+                    <button class="btn" style="margin-top:0;" onclick="submitStudentCode()">Start Practice</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- TEACHER CODE MODAL                                                 -->
+    <!-- ================================================================ -->
+    <div class="modal-backdrop" id="teacherCodeModal">
+        <div class="modal-card" style="max-width:430px;">
+            <div class="modal-head">
+                <h2>🔐 Teacher Access</h2>
+                <button class="modal-close" onclick="closeTeacherCode()" aria-label="Close">✕</button>
+            </div>
+            <p class="modal-sub">Enter the teacher code to open the dashboard.</p>
+            <input id="teacherCodeInput" class="code-input" type="password" autocomplete="off" placeholder="Teacher code" aria-label="Teacher code">
+            <div id="teacherCodeError" class="code-error"></div>
+            <div class="code-actions" style="justify-content:flex-end;">
+                <button class="gate-cancel" style="margin-top:0;" onclick="closeTeacherCode()">Cancel</button>
+                <button class="btn" style="margin-top:0;" onclick="submitTeacherCode()">Unlock Dashboard</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- TEACHER DASHBOARD MODAL                                            -->
+    <!-- ================================================================ -->
+    <div class="modal-backdrop" id="teacherModal">
+        <div class="modal-card">
+            <div class="modal-head">
+                <h2>👩‍🏫 Teacher Dashboard</h2>
+                <div class="modal-head-actions">
+                    <button class="tool-btn refresh" onclick="renderTeacher()" title="Refresh">🔄 Refresh</button>
+                    <button class="modal-close" onclick="closeTeacher()" aria-label="Close">✕</button>
+                </div>
+            </div>
+            <p class="modal-sub">Live scoreboard for every student on this device. Every attempt is recorded when a student presses <strong>Check Answers</strong>. Revealed answers never earn points. The 🔓 icon marks exercises where a student used the reveal feature.</p>
+            <div id="teacherContent"></div>
+            <div class="modal-foot">
+                <button class="tool-btn danger" onclick="resetAllProgress()">🗑️ Reset All Progress</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- TOAST                                                              -->
+    <!-- ================================================================ -->
+    <div class="toast" id="toast"></div>
+
+    <div class="game-shell" id="gameShell">
+
+        <!-- ========== BRAND BAR ========== -->
+        <div class="brand-bar">
+            <h1>🚀 ESL Mastery Quest</h1>
+            <div class="brand-right">
+                <span class="student-chip" id="studentChip">👤 No student logged in</span>
+                <span class="creator-tag">Created by <strong>Fani</strong></span>
+            </div>
+        </div>
+
+        <!-- ========== GLOBAL CONTROLS ========== -->
+        <div class="control-bar" id="controlBar">
+            <button class="ctrl-btn logout-btn" onclick="logoutStudent()">🚪 Logout</button>
+            <button class="ctrl-btn" onclick="requestTeacherAccess()">👩‍🏫 Teacher Dashboard</button>
+            <button class="ctrl-btn" id="toggleExplainBtn" onclick="toggleAllExplanations()">🙈 Hide Explanations</button>
+            <button class="ctrl-btn" id="zoomInBtn" onclick="zoomGame(1.05)">🔍 Zoom In</button>
+            <button class="ctrl-btn" id="zoomOutBtn" onclick="zoomGame(0.95)">🔍 Zoom Out</button>
+            <button class="ctrl-btn" onclick="resetZoom()">↺ Reset Zoom</button>
+            <button class="ctrl-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+            <button class="ctrl-btn" id="revealAllBtn" onclick="revealAllAttempted()">🔓 Reveal Answers</button>
+        </div>
+
+        <!-- ========== SCORING RULE NOTICE ========== -->
+        <div class="scoring-note">
+            📝 <strong>Scoring rule:</strong> Hints are always free. Revealing a correct answer shows you the solution, but that question will <strong>not earn a point</strong> — even if you then type the correct answer. Answer honestly to score!
+        </div>
+
+        <!-- ========== CATEGORY NAVIGATION ========== -->
+        <div class="category-bar" id="categoryBar">
+            <button class="cat-btn active" data-cat="food">🥛 Food Containers</button>
+            <button class="cat-btn" data-cat="animals">🐴 Animal Families</button>
+            <button class="cat-btn" data-cat="vowels">🔤 Vowels & Magic E</button>
+            <button class="cat-btn" data-cat="nouns">📦 Countable / Uncountable</button>
+            <button class="cat-btn" data-cat="idioms">🎭 Idioms</button>
+            <button class="cat-btn" data-cat="classification">🦁 Animal Classification</button>
+            <button class="cat-btn" data-cat="reading">📖 Reading Comprehension</button>
+            <button class="cat-btn" data-cat="dialogue">🍽️ Restaurant Dialogue</button>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- FOOD CONTAINERS PANEL -->
+        <!-- ================================================================ -->
+        <div class="panel active" id="panel-food">
+            <div class="card">
+                <h2>🥛 Food Containers — What Holds What?</h2>
+                <p>Many foods and drinks are <strong>uncountable</strong>. You cannot say “a milk” or “two rices”. Instead, English uses a <strong>container word</strong> (also called a <em>partitive</em>) to make them countable. This is essential for shopping, cooking, and everyday conversation.</p>
+
+                <h3>📋 The Essential Container Chart</h3>
+                <table>
+                    <thead><tr><th>Container</th><th>Typical Contents</th><th>Example Sentence</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Carton</strong></td><td>Milk, juice, cream</td><td>“We need a <strong>carton of milk</strong>.”</td></tr>
+                        <tr><td><strong>Jar</strong></td><td>Jam, honey, pickles, peanut butter</td><td>“She opened a <strong>jar of strawberry jam</strong>.”</td></tr>
+                        <tr><td><strong>Loaf</strong></td><td>Bread</td><td>“He bought a <strong>loaf of bread</strong>.”</td></tr>
+                        <tr><td><strong>Can</strong> (UK: tin)</td><td>Soup, beans, tuna, soda</td><td>“I heated a <strong>can of tomato soup</strong>.”</td></tr>
+                        <tr><td><strong>Bag / Sack</strong></td><td>Rice, flour, potatoes, sugar</td><td>“We bought a heavy <strong>bag of rice</strong>.”</td></tr>
+                        <tr><td><strong>Bottle</strong></td><td>Water, cola, juice, beer</td><td>“A <strong>bottle of water</strong>, please.”</td></tr>
+                        <tr><td><strong>Box</strong></td><td>Eggs, chocolates, cereal</td><td>“A <strong>box of eggs</strong>.”</td></tr>
+                        <tr><td><strong>Tube</strong></td><td>Toothpaste, cream</td><td>“A <strong>tube of toothpaste</strong>.”</td></tr>
+                        <tr><td><strong>Slice</strong></td><td>Bread, cake, cheese, pizza</td><td>“A <strong>slice of cake</strong>.”</td></tr>
+                        <tr><td><strong>Glass / Cup</strong></td><td>Water, tea, coffee</td><td>“A <strong>glass of juice</strong>.”</td></tr>
+                    </tbody>
+                </table>
+                <div class="rule-box">💡 <strong>Memory trick:</strong> If you can pick it up with one hand and it has a lid, it is probably a <em>jar</em> (jam), a <em>carton</em> (milk), or a <em>tube</em> (toothpaste). If it is long and you cut it, it is a <em>loaf</em> (bread) or a <em>bar</em> (chocolate).</div>
+
+                <h3>✅ Exam Questions — Solved</h3>
+                <ul>
+                    <li>Milk → <strong>(b) Carton</strong></li>
+                    <li>Jam → <strong>(d) Jar</strong></li>
+                    <li>Bread → <strong>(a) Loaf</strong></li>
+                    <li>Soup → <strong>(c) Can</strong></li>
+                    <li>Rice → <strong>(e) Bag / Sack</strong></li>
+                </ul>
+
+                <div class="exercise-block" data-exercise="food-p1">
+                    <h4>🎮 Practice 1: Choose the correct container
+                        <span class="exercise-tools">
+                            <button class="tool-btn" onclick="revealHint('food-p1')">💡 Hint</button>
+                            <button class="tool-btn" onclick="revealAnswer('food-p1')">🔓 Reveal Answer</button>
+                        </span>
+                    </h4>
+                    <div id="food-p1"></div>
+                    <button class="btn" onclick="checkExercise('food-p1')">Check Answers</button>
+                    <div id="food-p1-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-block" data-exercise="food-p2">
+                    <h4>🎮 Practice 2: Container (C) or Food (F)?
+                        <span class="exercise-tools">
+                            <button class="tool-btn" onclick="revealHint('food-p2')">💡 Hint</button>
+                            <button class="tool-btn" onclick="revealAnswer('food-p2')">🔓 Reveal Answer</button>
+                        </span>
+                    </h4>
+                    <div id="food-p2"></div>
+                    <button class="btn" onclick="checkExercise('food-p2')">Check Answers</button>
+                    <div id="food-p2-feedback" class="feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- ANIMAL FAMILIES PANEL -->
+        <!-- ================================================================ -->
+        <div class="panel" id="panel-animals">
+            <div class="card">
+                <h2>🐴 Animal Families — Male, Female & Baby</h2>
+                <p>English uses special words for the male, female, and young of many animals. These are not just trivia — they appear in reading passages, idioms, and everyday descriptions. The table below is verified against standard references.[reference:1]</p>
+
+                <h3>📋 The Core Exam Chart (and beyond)</h3>
+                <table>
+                    <thead><tr><th>Animal</th><th>Male</th><th>Female</th><th>Baby</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Horse</strong></td><td>Stallion</td><td>Mare</td><td><strong>Foal</strong></td></tr>
+                        <tr><td><strong>Chicken</strong></td><td>Rooster</td><td><strong>Hen</strong></td><td>Chick</td></tr>
+                        <tr><td><strong>Cow / Cattle</strong></td><td>Bull</td><td>Cow</td><td><strong>Calf</strong></td></tr>
+                        <tr><td><strong>Cat</strong></td><td>Tom</td><td>Queen</td><td><strong>Kitten</strong></td></tr>
+                        <tr><td><strong>Sheep</strong></td><td>Ram</td><td>Ewe</td><td><strong>Lamb</strong></td></tr>
+                        <tr><td><strong>Pig</strong></td><td>Boar</td><td>Sow</td><td>Piglet</td></tr>
+                        <tr><td><strong>Dog</strong></td><td>Dog</td><td>Bitch</td><td>Puppy</td></tr>
+                        <tr><td><strong>Duck</strong></td><td>Drake</td><td>Duck</td><td>Duckling</td></tr>
+                        <tr><td><strong>Lion</strong></td><td>Lion</td><td>Lioness</td><td>Cub</td></tr>
+                        <tr><td><strong>Whale</strong></td><td>Bull</td><td>Cow</td><td>Calf</td></tr>
+                    </tbody>
+                </table>
+                <div class="rule-box">⚠️ <strong>Common trap:</strong> A baby cow is a <strong>calf</strong>, not a cub. A cub belongs to lions, bears, and foxes. A baby sheep is a <strong>lamb</strong>, not a foal — a foal is a baby horse.</div>
+
+                <h3>✅ Exam Questions — Solved</h3>
+                <ul>
+                    <li>Horse: Baby = <strong>Foal</strong></li>
+                    <li>Chicken: Female = <strong>Hen</strong></li>
+                    <li>Cow: Baby = <strong>Calf</strong></li>
+                    <li>Cat: Baby = <strong>Kitten</strong></li>
+                    <li>Sheep: Baby = <strong>Lamb</strong></li>
+                </ul>
+
+                <div class="exercise-block" data-exercise="animals-p1">
+                    <h4>🎮 Practice 1: Complete the family
+                        <span class="exercise-tools">
+                            <button class="tool-btn" onclick="revealHint('animals-p1')">💡 Hint</button>
+                            <button class="tool-btn" onclick="revealAnswer('animals-p1')">🔓 Reveal Answer</button>
+                        </span>
+                    </h4>
+                    <div id="animals-p1"></div>
+                    <button class="btn" onclick="checkExercise('animals-p1')">Check Answers</button>
+                    <div id="animals-p1-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-block" data-exercise="animals-p2">
+                    <h4>🎮 Practice 2: True or False?
+                        <span class="exercise-tools">
+                            <button class="tool-btn" onclick="revealHint('animals-p2')">💡 Hint</button>
+                            <button class="tool-btn" onclick="revealAnswer('animals-p2')">🔓 Reveal Answer</button>
+                        </span>
+                    </h4>
+                    <div id="animals-p2"></div>
+                    <button class="btn" onclick="checkExercise('animals-p2')">Check Answers</button>
+                    <div id="animals-p2-feedback" class="feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- VOWELS PANEL -->
+        <!-- ================================================================ -->
+        <div class="panel" id="panel-vowels">
+            <div class="card">
+                <h2>🔤 Short & Long Vowels — The Magic E Rule</h2>
+                <p>English vowels (A, E, I, O, U) have a <strong>short</strong> sound and a <strong>long</strong> sound. The <strong>Magic E</strong> (silent e / VCe pattern) is one of the most reliable spelling rules: a final silent <em>e</em> makes the earlier vowel long.[reference:3]</p>
+                <div class="rule-box">✨ <strong>Magic E Rule:</strong> When a word ends in <strong>vowel + consonant + e</strong>, the final <em>e</em> is silent, and the first vowel becomes <strong>long</strong>. <br> <em>hop</em> (short o) → <em>hope</em> (long o) &nbsp;|&nbsp; <em>cut</em> (short u) → <em>cute</em> (long u) &nbsp;|&nbsp; <em>pet</em> (short e) → <em>Pete</em> (long e).[reference:4]</div>
+
+                <h3>📋 Short vs. Long — Minimal Pairs</h3>
+                <table>
+                    <thead><tr><th>Short Sound</th><th>Long Sound (Magic E)</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>cap</strong> (short a)</td><td><strong>cape</strong> (long a)</td></tr>
+                        <tr><td><strong>pet</strong> (short e)</td><td><strong>Pete</strong> (long e)</td></tr>
+                        <tr><td><strong>kit</strong> (short i)</td><td><strong>kite</strong> (long i)</td></tr>
+                        <tr><td><strong>hop</strong> (short o)</td><td><strong>hope</strong> (long o)</td></tr>
+                        <tr><td><strong>cub</strong> (short u)</td><td><strong>cube</strong> (long u)</td></tr>
+                        <tr><td><strong>not</strong> (short o)</td><td><strong>note</strong> (long o)</td></tr>
+                        <tr><td><strong>tub</strong> (short u)</td><td><strong>tube</strong> (long u)</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>✅ Exam Questions — Solved</h3>
+                <ul>
+                    <li>Home → <strong>Long (L)</strong> → H_O_M_E</li>
+                    <li>Cut → <strong>Short (S)</strong> → C_U_T</li>
+                    <li>Bike → <strong>Long (L)</strong> → B_I_K_E</li>
+                    <li>Pet → <strong>Short (S)</strong> → P_E_T</li>
+                    <li>Rope → <strong>Long (L)</strong> → R_O_P_E</li>
+                </ul>
+
+                <div class="exercise-block" data-exercise="vowels-p1">
+                    <h4>🎮 Practice 1: Short (S) or Long (L)?
+                        <span class="exercise-tools">
+                            <button class="tool-btn" onclick="revealHint('vowels-p1')">💡 Hint</button>
+                            <button class="tool-btn" onclick="revealAnswer('vowels-p1')">🔓 Reveal Answer</button>
+                        </span>
+                    </h4>
+                    <div id="vowels-p1"></div>
+                    <button class="btn" onclick="checkExercise('vowels-p1')">Check Answers</button>
+                    <div id="vowels-p1-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-block" data-exercise="vowels-p2">
+                    <h4>🎮 Practice 2: Add Magic E
+                        <span class="exercise-tools">
+                            <button class="tool-btn" onclick="revealHint('vowels-p2')">💡 Hint</button>
+                            <button class="tool-btn" onclick="revealAnswer('vowels-p2')">🔓 Reveal Answer</button>
+                        </span>
+                    </h4>
+                    <p>Type the new word formed by adding <strong>e</strong> to the end.</p>
+                    <div id="vowels-p2"></div>
+                    <button class="btn" onclick="checkExercise('vowels-p2')">Check Answers</button>
+                    <div id="vowels-p2-feedback" class="feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- COUNTABLE / UNCOUNTABLE PANEL -->
+        <!-- ================================================================ -->
+        <div class="panel" id="panel-nouns">
+            <div class="card">
+                <h2>📦 Countable & Uncountable Nouns</h2>
+                <p><strong>Countable nouns</strong> can be counted with numbers: <em>one apple, two apples</em>. <strong>Uncountable nouns</strong> are treated as a whole mass: <em>water, rice, bread, milk, cheese, information, music</em>. They do <strong>not</strong> normally have a plural form.</p>
+                <div class="rule-box">🔑 <strong>How to “count” the uncountable:</strong> Use a container or unit — <em>a glass of water, a slice of bread, a bowl of rice, a piece of cheese</em>.</div>
+
+                <h3>📋 The Quantifier Rules</h3>
+                <table>
+                    <thead><tr><th>Word</th><th>Used with…</th><th>Example</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Many</strong></td><td>Countable nouns (plural)</td><td>“How <strong>many</strong> apples?”</td></tr>
+                        <tr><td><strong>Much</strong></td><td>Uncountable nouns</td><td>“How <strong>much</strong> water?”</td></tr>
+                        <tr><td><strong>A lot of / lots of</strong></td><td><strong>Both</strong> types (especially positive sentences)</td><td>“A lot of apples / a lot of water.”</td></tr>
+                        <tr><td><strong>Some</strong></td><td>Positive sentences (both types); offers & requests</td><td>“I need <strong>some</strong> sugar.”</td></tr>
+                        <tr><td><strong>Any</strong></td><td>Negative sentences & most questions (both types)</td><td>“There isn’t <strong>any</strong> milk.”</td></tr>
+                    </tbody>
+                </table>
+                <p><em>Note:</em> “Much” and “many” are unusual in positive sentences. Native speakers prefer “a lot of” there.</p>
+
+                <h3>✅ Exam Questions — Solved</h3>
+                <ol>
+                    <li>There are <strong>many</strong> apples. <em>(Apples are countable.)</em></li>
+                    <li>How <strong>much</strong> water…? <em>(Water is uncountable.)</em></li>
+                    <li>I need <strong>some</strong> sugar. <em>(Positive sentence.)</em></li>
+                    <li>There isn’t <strong>any</strong> milk. <em>(Negative sentence.)</em></li>
+                    <li>Rice is an <strong>uncountable</strong> noun.</li>
+                </ol>
+
+                <h3>📋 Sorting — Exam Part B Solved</h3>
+                <table>
+                    <thead><tr><th>Countable Nouns</th><th>Uncountable Nouns</th></tr></thead>
+                    <tbody>
+                        <tr><td>Egg</td><td>Cheese</td></tr>
+                        <tr><td>Banana</td><td>Juice</td></tr>
+                        <tr><td>Tomato</td><td>Bread</td></tr>
+                        <tr><td>Carrot</td><td>Water</td></tr>
+                        <tr><td>Apple</td><td>Meat</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="exercise-block" data-exercise="nouns-p1">
+                    <h4>🎮 Practice 1: Countable (C) or Uncountable (U)?
+                        <span class="exercise-tools">
+                            <button class="tool-btn" onclick="revealHint('nouns-p1')">💡 Hint</button>
+                            <button class="tool-btn" onclick="revealAnswer('nouns-p1')">🔓 Reveal Answer</button>
+                        </span>
+                    </h4>
+                    <div id="nouns-p1"></div>
+                    <button class="btn" onclick="checkExercise('nouns-p1')">Check Answers</button>
+                    <div id="nouns-p1-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-block" data-exercise="nouns-p2">
+                    <h4>🎮 Practice 2: Choose <em>much, many, some,</em> or <em>any</em>.
+                        <span class="exercise-tools">
+                            <button class="tool-btn" onclick="revealHint('nouns-p2')">💡 Hint</button>
+                            <button class="tool-btn" onclick="revealAnswer('nouns-p2')">🔓 Reveal Answer</button>
+                        </span>
+                    </h4>
+                    <div id="nouns-p2"></div>
+                    <button class="btn" onclick="checkExercise('nouns-p2')">Check Answers</button>
+                    <div id="nouns-p2-feedback" class="feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- IDIOMS PANEL -->
+        <!-- ================================================================ -->
+        <div class="panel" id="panel-idioms">
+            <div class="card">
+                <h2>🎭 Idioms & Phrases</h2>
+                <p>An <strong>idiom</strong> is a fixed group of words whose meaning is different from the literal meaning. “That test was a piece of cake” means the test was <strong>very easy</strong>. Idioms must be learned as whole phrases.[reference:12]</p>
+
+                <h3>📋 The Exam Idiom Box — with meanings and examples</h3>
+                <div class="idiom-grid">
+                    <div class="idiom-item"><strong>Piece of cake</strong> — very easy.<br><em>“The homework was a piece of cake.”</em>[reference:13]</div>
+                    <div class="idiom-item"><strong>Go bananas</strong> — become very excited or crazy.<br><em>“The kids went bananas when they saw the ice cream.”</em></div>
+                    <div class="idiom-item"><strong>Couch potato</strong> — a lazy person who sits and watches TV all day.<br><em>“My uncle is a total couch potato.”</em>[reference:14]</div>
+                    <div class="idiom-item"><strong>Wolf down</strong> — eat very quickly and hungrily.<br><em>“He wolfed down his lunch.”</em></div>
+                    <div class="idiom-item"><strong>Chicken out</strong> — decide not to do something because you are scared.<br><em>“She wanted to sing but chickened out.”</em></div>
+                    <div class="idiom-item"><strong>Monkey around</strong> — play around or behave silly instead of being serious.<br><em>“Stop monkeying around and do your work!”</em></div>
+                    <div class="idiom-item"><strong>Bad egg</strong> — a dishonest or unpleasant person.<br><em>“Don’t trust him; he’s a bad egg.”</em></div>
+                    <div class="idiom-item"><strong>Pig out</strong> — eat a very large amount of food.<br><em>“We pigged out at the birthday party.”</em></div>
+                </div>
+
+                <h3>✅ Exam Questions — Solved with explanations</h3>
+                <ol>
+                    <li>The math test was so easy; it was a <strong>piece of cake</strong>.</li>
+                    <li>Don’t <strong>monkey around</strong> with your food; eat it properly!</li>
+                    <li>My brother is a total <strong>couch potato</strong>; he watches TV all day.</li>
+                    <li>When the teacher announced the quiz, the students started to <strong>go bananas</strong>.</li>
+                    <li>He was so hungry that he managed to <strong>wolf down</strong> three burgers.</li>
+                    <li>I wanted to go bungee jumping, but I <strong>chickened out</strong> at the last minute.</li>
+                    <li>Stay away from John; he is a <strong>bad egg</strong>.</li>
+                    <li>On Thanksgiving, we always <strong>pig out</strong> on turkey and pie.</li>
+                </ol>
+
+                <div class="exercise-block" data-exercise="idioms-p1">
+                    <h4>🎮 Practice 1: Match the situation to the idiom
+                        <span class="exercise-tools">
+                            <button class="tool-btn" onclick="revealHint('idioms-p1')">💡 Hint</button>
+                            <button class="tool-btn" onclick="revealAnswer('idioms-p1')">🔓 Reveal Answer</button>
+                        </span>
+                    </h4>
+                    <div id="idioms-p1"></div>
+                    <button class="btn" onclick="checkExercise('idioms-p1')">Check Answers</button>
+                    <div id="idioms-p1-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-block" data-exercise="idioms-p2">
+                    <h4>🎮 Practice 2: Choose the correct idiom
+                        <span class="exercise-tools">
+                            <button class="tool-btn" onclick="revealHint('idioms-p2')">💡 Hint</button>
+                            <button class="tool-btn" onclick="revealAnswer('idioms-p2')">🔓 Reveal Answer</button>
+                        </span>
+                    </h4>
+                    <div id="idioms-p2"></div>
+                    <button class="btn" onclick="checkExercise('idioms-p2')">Check Answers</button>
+                    <div id="idioms-p2-feedback" class="feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- ANIMAL CLASSIFICATION PANEL -->
+        <!-- ================================================================ -->
+        <div class="panel" id="panel-classification">
+            <div class="card">
+                <h2>🦁 Animal Classification — Mammals, Insects, Birds & More</h2>
+                <p>Knowing animal groups helps you answer multiple-choice questions and understand reading passages. The key features below are verified against educational science sources.[reference:15]</p>
+
+                <h3>📋 The Core Groups</h3>
+                <table>
+                    <thead><tr><th>Group</th><th>Key Features</th><th>Examples</th><th>Common Trap</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Mammal</strong></td><td>Breathes air, has a backbone, grows hair/fur, feeds babies milk[reference:16]</td><td>Whale, bat, dog, human, lion, dolphin</td><td>Whales and dolphins are mammals, not fish. Bats are mammals, not birds.</td></tr>
+                        <tr><td><strong>Insect</strong></td><td>Six legs, body in three parts (head, thorax, abdomen)[reference:17]</td><td>Butterfly, ant, bee, beetle</td><td>Spiders are <strong>not</strong> insects — they have eight legs (arachnids).</td></tr>
+                        <tr><td><strong>Bird</strong></td><td>Feathers, wings, beak; lays eggs[reference:18]</td><td>Penguin, eagle, duck, chicken</td><td>Penguins are birds even though they cannot fly.</td></tr>
+                        <tr><td><strong>Reptile</strong></td><td>Dry scaly skin; usually lays eggs[reference:19]</td><td>Snake, lizard, turtle, crocodile</td><td>—</td></tr>
+                        <tr><td><strong>Fish</strong></td><td>Lives in water, breathes through gills, has fins[reference:20]</td><td>Shark, salmon, goldfish</td><td>Sharks are fish, not mammals.</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>✅ Exam Questions — Solved</h3>
+                <ol>
+                    <li>Which is a mammal? → <strong>b) Whale</strong></li>
+                    <li>Which is an insect? → <strong>b) Butterfly</strong></li>
+                    <li>“Ferret out” means to: → <strong>b) search for something until you find it</strong>[reference:21]</li>
+                    <li>Which is a bird? → <strong>b) Penguin</strong></li>
+                    <li>Animal describer for a lion → <strong>b) Fierce</strong></li>
+                </ol>
+                <p><strong>Other useful animal describers:</strong> gentle, playful, curious, graceful, gigantic, tiny, colourful, slimy, furry, aggressive, nocturnal.</p>
+
+                <div class="exercise-block" data-exercise="class-p1">
+                    <h4>🎮 Practice 1: Classify the animal
+                        <span class="exercise-tools">
+                            <button class="tool-btn" onclick="revealHint('class-p1')">💡 Hint</button>
+                            <button class="tool-btn" onclick="revealAnswer('class-p1')">🔓 Reveal Answer</button>
+                        </span>
+                    </h4>
+                    <p>Choose <strong>Mammal</strong>, <strong>Insect</strong>, <strong>Bird</strong>, <strong>Reptile</strong>, or <strong>Fish</strong>.</p>
+                    <div id="class-p1"></div>
+                    <button class="btn" onclick="checkExercise('class-p1')">Check Answers</button>
+                    <div id="class-p1-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-block" data-exercise="class-p2">
+                    <h4>🎮 Practice 2: True or False?
+                        <span class="exercise-tools">
+                            <button class="tool-btn" onclick="revealHint('class-p2')">💡 Hint</button>
+                            <button class="tool-btn" onclick="revealAnswer('class-p2')">🔓 Reveal Answer</button>
+                        </span>
+                    </h4>
+                    <div id="class-p2"></div>
+                    <button class="btn" onclick="checkExercise('class-p2')">Check Answers</button>
+                    <div id="class-p2-feedback" class="feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- READING COMPREHENSION PANEL -->
+        <!-- ================================================================ -->
+        <div class="panel" id="panel-reading">
+            <div class="card">
+                <h2>📖 Reading Comprehension — “A Memorable Day at the Zoo”</h2>
+                <p>Comprehension questions test more than finding words. They test <strong>literal recall</strong>, <strong>vocabulary in context</strong>, <strong>inference</strong>, and <strong>grammar awareness</strong>.</p>
+
+                <h3>📋 The Passage (key vocabulary first)</h3>
+                <div class="rule-box">
+                    <strong>Enclosure</strong> — a fenced area where animals are kept.<br>
+                    <strong>Fierce</strong> — scary and dangerous-looking.<br>
+                    <strong>Wolfed down</strong> — ate very quickly (idiom).<br>
+                    <strong>Couch potatoes</strong> — people sitting and relaxing, not being active (idiom).<br>
+                    <strong>Ducked out</strong> — left quickly and quietly (idiom).
+                </div>
+                <p><em>Last Sunday, my family went to the City Zoo. We packed a loaf of bread, a carton of juice, and some apples. We saw monkeys monkeying around, a fierce lion, and many birds. At lunchtime, we wolfed down our sandwiches. After eating, we felt like couch potatoes. A duck came close, but it ducked out and ran into the pond. It was a memorable day!</em></p>
+
+                <h3>✅ Exam Questions — Model Answers & Strategies</h3>
+                <table>
+                    <thead><tr><th>Question</th><th>Model Answer</th><th>Strategy</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>1. What food containers are mentioned?</strong></td><td>A <strong>loaf</strong> (of bread) and a <strong>carton</strong> (of juice).</td><td>Scan for container words.</td></tr>
+                        <tr><td><strong>2. What does “wolfed down” mean?</strong></td><td>They ate their sandwiches <strong>very quickly and hungrily</strong>.</td><td>Use the clue “we were so hungry.”</td></tr>
+                        <tr><td><strong>3. Why did they feel like “couch potatoes”?</strong></td><td>They had eaten a big lunch, felt full and lazy, and wanted to sit and relax on a bench.</td><td>Inference: connect “after eating” + “sat on a bench.”</td></tr>
+                        <tr><td><strong>4. Find one uncountable and one countable noun.</strong></td><td><strong>Uncountable:</strong> bread, juice. <strong>Countable:</strong> apples, monkeys, sandwiches, birds, bench.</td><td>Check: can you say “two ___”? If yes → countable.</td></tr>
+                        <tr><td><strong>5. Add one animal + why (use a describer).</strong></td><td><em>Example:</em> “I would add a <strong>giraffe</strong> because it is <strong>gentle and tall</strong>.”</td><td>Use an adjective from the describer list.</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="exercise-block" data-exercise="reading-p1">
+                    <h4>🎮 Practice 1: Comprehension check
+                        <span class="exercise-tools">
+                            <button class="tool-btn" onclick="revealHint('reading-p1')">💡 Hint</button>
+                            <button class="tool-btn" onclick="revealAnswer('reading-p1')">🔓 Reveal Answer</button>
+                        </span>
+                    </h4>
+                    <div id="reading-p1"></div>
+                    <button class="btn" onclick="checkExercise('reading-p1')">Check Answers</button>
+                    <div id="reading-p1-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-block" data-exercise="reading-p2">
+                    <h4>🎮 Practice 2: Inference — choose the best answer
+                        <span class="exercise-tools">
+                            <button class="tool-btn" onclick="revealHint('reading-p2')">💡 Hint</button>
+                            <button class="tool-btn" onclick="revealAnswer('reading-p2')">🔓 Reveal Answer</button>
+                        </span>
+                    </h4>
+                    <div id="reading-p2"></div>
+                    <button class="btn" onclick="checkExercise('reading-p2')">Check Answers</button>
+                    <div id="reading-p2-feedback" class="feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- RESTAURANT DIALOGUE PANEL -->
+        <!-- ================================================================ -->
+        <div class="panel" id="panel-dialogue">
+            <div class="card">
+                <h2>🍽️ Functional Dialogue — At the Restaurant</h2>
+                <p>Ordering food politely follows predictable patterns. Mastering these phrases prepares you for real-life situations and functional-dialogue exam tasks.</p>
+
+                <h3>📋 Useful Polite Phrases</h3>
+                <table>
+                    <thead><tr><th>Function</th><th>Polite Phrases</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Ordering a main dish</strong></td><td>“I would like the grilled chicken, please.” / “Could I have the pasta?” / “I’ll have the soup, please.”</td></tr>
+                        <tr><td><strong>Ordering a drink (with container)</strong></td><td>“A <strong>glass of</strong> orange juice, please.” / “A <strong>bottle of</strong> water.” / “A <strong>cup of</strong> coffee.”</td></tr>
+                        <tr><td><strong>Waiter asking about dessert</strong></td><td>“Would you like to see the dessert menu?” / “Can I interest you in some dessert?”</td></tr>
+                        <tr><td><strong>Refusing politely / asking for the bill</strong></td><td>“No, thank you. Just the bill, please.”</td></tr>
+                        <tr><td><strong>Checking information</strong></td><td>“Let me check that.” / “Could you repeat that, please?”</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>✅ Exam Dialogue — Completed Model</h3>
+                <div class="rule-box">
+                    <strong>Waiter:</strong> Good evening! Welcome to The Green Leaf. Are you ready to order?<br>
+                    <strong>Customer:</strong> Yes, please. I would like <strong>the grilled salmon with vegetables</strong>.<br>
+                    <strong>Waiter:</strong> Would you like anything to drink?<br>
+                    <strong>Customer:</strong> Yes, a <strong>glass of sparkling water, please</strong>.<br>
+                    <strong>Waiter:</strong> Certainly. <strong>Would you like to see the dessert menu?</strong><br>
+                    <strong>Customer:</strong> No, thank you. Just the bill, please.
+                </div>
+
+                <div class="exercise-block" data-exercise="dialogue-p1">
+                    <h4>🎮 Practice 1: Choose the polite phrase
+                        <span class="exercise-tools">
+                            <button class="tool-btn" onclick="revealHint('dialogue-p1')">💡 Hint</button>
+                            <button class="tool-btn" onclick="revealAnswer('dialogue-p1')">🔓 Reveal Answer</button>
+                        </span>
+                    </h4>
+                    <div id="dialogue-p1"></div>
+                    <button class="btn" onclick="checkExercise('dialogue-p1')">Check Answers</button>
+                    <div id="dialogue-p1-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-block" data-exercise="dialogue-p2">
+                    <h4>🎮 Practice 2: Complete the dialogue
+                        <span class="exercise-tools">
+                            <button class="tool-btn" onclick="revealHint('dialogue-p2')">💡 Hint</button>
+                            <button class="tool-btn" onclick="revealAnswer('dialogue-p2')">🔓 Reveal Answer</button>
+                        </span>
+                    </h4>
+                    <p>Type the missing words.</p>
+                    <div id="dialogue-p2"></div>
+                    <button class="btn" onclick="checkExercise('dialogue-p2')">Check Answers</button>
+                    <div id="dialogue-p2-feedback" class="feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== COPYRIGHT FOOTER ========== -->
+        <div class="copyright-footer">
+            <strong>Created by Fani</strong> · © 2026 ESL Mastery Quest. All rights reserved.<br>
+            <span class="lock-notice">🔒 No part of this content may be reproduced, altered, or edited without express written permission.</span>
+        </div>
+
+    </div>
+
+    <script>
+        /* ================================================================
+           SECURITY: DISABLE COPY, CUT, CONTEXT MENU, AND DEVTOOLS SHORTCUTS
+           ================================================================ */
+        document.addEventListener('copy', (e) => e.preventDefault());
+        document.addEventListener('cut', (e) => e.preventDefault());
+        document.addEventListener('contextmenu', (e) => e.preventDefault());
+        document.addEventListener('keydown', (e) => {
+            const k = (e.key || '').toLowerCase();
+            if ((e.ctrlKey || e.metaKey) && ['c', 'x', 'u', 's'].includes(k)) {
+                e.preventDefault();
+            }
+            if (e.key === 'F12' || ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c'].includes(k))) {
+                e.preventDefault();
+            }
+        });
+        document.addEventListener('dragstart', (e) => e.preventDefault());
+
+        /* ================================================================
+           ACCESS CODES
+           ----------------------------------------------------------------
+           🔐 CHANGE THESE to your own private codes.
+           - Student codes unlock only that student's practice session.
+           - The teacher code unlocks the Teacher Dashboard.
+           ================================================================ */
+        const STUDENT_CODES = {
+            'Shino': 'SHINO-101',
+            'Lucy':  'LUCY-202',
+            'Evan':  'EVAN-303'
+        };
+        const TEACHER_CODE = 'FANI-TEACHER-2026';
+
+        /* ================================================================
+           GLOBAL STATE
+           ================================================================ */
+        let explanationsVisible = true;
+
+        const DEFAULT_STUDENTS = ['Shino', 'Lucy', 'Evan'];
+        const STORAGE_KEY = 'esl_mastery_quest_progress_v1';
+        const MAX_HISTORY = 30;
+
+        const AVATAR_GRADIENTS = [
+            'linear-gradient(135deg,#0b3b5c,#1e6f9f)',
+            'linear-gradient(135deg,#a35a00,#f0a500)',
+            'linear-gradient(135deg,#1d6b46,#2e8b57)'
+        ];
+
+        let currentStudent = null;
+        let pendingStudent = null;
+        let progressData = loadProgress();
+        let toastTimer = null;
+
+        function normalizeCode(s) {
+            return String(s || '').trim().toUpperCase();
+        }
+
+        function createStudentRecord() {
+            return { exercises: {}, lastActive: null, sessions: 0 };
+        }
+
+        function loadProgress() {
+            const fresh = {};
+            DEFAULT_STUDENTS.forEach(n => { fresh[n] = createStudentRecord(); });
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return fresh;
+                const parsed = JSON.parse(raw);
+                if (!parsed || typeof parsed !== 'object') return fresh;
+                DEFAULT_STUDENTS.forEach(name => {
+                    const rec = parsed[name];
+                    if (rec && typeof rec === 'object') {
+                        fresh[name] = {
+                            exercises: (rec.exercises && typeof rec.exercises === 'object') ? rec.exercises : {},
+                            lastActive: rec.lastActive || null,
+                            sessions: rec.sessions || 0
+                        };
+                        /* Migrate: ensure every exercise has a history array */
+                        Object.keys(fresh[name].exercises).forEach(id => {
+                            const e = fresh[name].exercises[id];
+                            if (e && typeof e === 'object') {
+                                if (!Array.isArray(e.history)) {
+                                    e.history = [];
+                                    if (e.attempts > 0 && typeof e.best === 'number') {
+                                        e.history.push({
+                                            score: e.best,
+                                            total: e.total || 0,
+                                            timestamp: e.updated || Date.now()
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            } catch (err) {
+                /* Storage unavailable or corrupted — use fresh in-memory data. */
+            }
+            return fresh;
+        }
+
+        function saveProgress() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(progressData));
+            } catch (err) {
+                /* Storage unavailable — progress stays in memory. */
+            }
+        }
+
+        function showToast(message, kind) {
+            const t = document.getElementById('toast');
+            if (!t) return;
+            t.textContent = message;
+            t.className = 'toast show' + (kind ? ' ' + kind : '');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => { t.className = 'toast'; }, 3400);
+        }
+
+        /* ================================================================
+           STUDENT GATE
+           ================================================================ */
+        function renderStudentButtons() {
+            const grid = document.getElementById('studentGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            DEFAULT_STUDENTS.forEach((name, i) => {
+                const s = studentSummary(name);
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'student-btn';
+                btn.onclick = () => askStudentCode(name);
+
+                const avatar = document.createElement('span');
+                avatar.className = 'student-avatar';
+                avatar.style.background = AVATAR_GRADIENTS[i % AVATAR_GRADIENTS.length];
+                avatar.textContent = name.charAt(0).toUpperCase();
+
+                const nameEl = document.createElement('span');
+                nameEl.className = 'student-name';
+                nameEl.textContent = name;
+
+                const scoreEl = document.createElement('span');
+                scoreEl.className = 'student-score';
+                scoreEl.textContent = s.earned + '/' + s.possible + ' pts · ' + s.pct + '%';
+
+                btn.appendChild(avatar);
+                btn.appendChild(nameEl);
+                btn.appendChild(scoreEl);
+                grid.appendChild(btn);
+            });
+        }
+
+        function openStudentGate() {
+            renderStudentButtons();
+            backToStudentPick();
+            const cancel = document.getElementById('gateCancel');
+            if (cancel) cancel.style.display = currentStudent ? 'inline-block' : 'none';
+            document.getElementById('studentGate').classList.remove('hidden');
+        }
+
+        function cancelGate() {
+            if (!currentStudent) return;
+            document.getElementById('studentGate').classList.add('hidden');
+        }
+
+        function askStudentCode(name) {
+            if (!DEFAULT_STUDENTS.includes(name)) return;
+            pendingStudent = name;
+
+            document.getElementById('studentPickView').style.display = 'none';
+            document.getElementById('studentCodeView').style.display = 'block';
+
+            const prompt = document.getElementById('studentCodePrompt');
+            prompt.innerHTML = '🔑 Enter <strong>' + name + '</strong>’s personal code';
+
+            const inp = document.getElementById('studentCodeInput');
+            inp.value = '';
+            inp.focus();
+
+            const err = document.getElementById('studentCodeError');
+            err.textContent = '';
+            err.style.display = 'none';
+        }
+
+        function backToStudentPick() {
+            pendingStudent = null;
+            document.getElementById('studentCodeView').style.display = 'none';
+            document.getElementById('studentPickView').style.display = 'block';
+
+            const err = document.getElementById('studentCodeError');
+            if (err) { err.textContent = ''; err.style.display = 'none'; }
+            const inp = document.getElementById('studentCodeInput');
+            if (inp) inp.value = '';
+        }
+
+        function submitStudentCode() {
+            if (!pendingStudent) return;
+
+            const inp = document.getElementById('studentCodeInput');
+            const err = document.getElementById('studentCodeError');
+            const entered = normalizeCode(inp.value);
+            const expected = normalizeCode(STUDENT_CODES[pendingStudent]);
+
+            if (!entered) {
+                err.textContent = 'Please type your personal code.';
+                err.style.display = 'block';
+                inp.focus();
+                return;
+            }
+
+            if (entered !== expected) {
+                err.textContent = '❌ Incorrect code for ' + pendingStudent + '. Please try again.';
+                err.style.display = 'block';
+                inp.value = '';
+                inp.focus();
+                return;
+            }
+
+            err.style.display = 'none';
+            const name = pendingStudent;
+            pendingStudent = null;
+            document.getElementById('studentCodeView').style.display = 'none';
+            document.getElementById('studentPickView').style.display = 'block';
+            loginStudent(name);
+        }
+
+        /* ================================================================
+           LOGIN / LOGOUT
+           ================================================================ */
+        function loginStudent(name) {
+            if (!DEFAULT_STUDENTS.includes(name)) return;
+            const changed = currentStudent !== name;
+            currentStudent = name;
+
+            if (!progressData[name]) progressData[name] = createStudentRecord();
+            progressData[name].lastActive = Date.now();
+            progressData[name].sessions = (progressData[name].sessions || 0) + 1;
+            saveProgress();
+
+            if (changed) clearAllInputs();
+
+            document.getElementById('studentGate').classList.add('hidden');
+            updateStudentChip();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            const rec = progressData[name];
+            const sessionNum = rec.sessions || 1;
+            showToast('🎉 Welcome, ' + name + '! Practice session #' + sessionNum + ' started. 🎯', 'good');
+        }
+
+        function logoutStudent() {
+            if (!currentStudent) {
+                openStudentGate();
+                return;
+            }
+            const name = currentStudent;
+            if (!confirm('Log out of ' + name + '?\n\nYour progress is saved. You can log back in any time with your code.')) return;
+
+            currentStudent = null;
+            clearAllInputs();
+            updateStudentChip();
+            openStudentGate();
+            showToast('👋 Logged out of ' + name + '. Progress saved.', '');
+        }
+
+        function updateStudentChip() {
+            const chip = document.getElementById('studentChip');
+            if (!chip) return;
+            if (!currentStudent) {
+                chip.textContent = '👤 No student logged in';
+                return;
+            }
+            const s = studentSummary(currentStudent);
+            const rec = progressData[currentStudent];
+            const sessions = rec ? (rec.sessions || 0) : 0;
+            chip.innerHTML = '👤 <strong>' + currentStudent + '</strong> · ' + s.earned + '/' + s.possible + ' pts (' + s.pct + '%) · session ' + sessions;
+        }
+
+        function clearAllInputs() {
+            document.querySelectorAll('.q-row input, .q-row select').forEach(el => {
+                el.value = '';
+                el.style.borderColor = 'var(--border)';
+                el.style.borderStyle = 'solid';
+                delete el.dataset.revealed;
+            });
+            document.querySelectorAll('.explanation-text').forEach(el => {
+                el.textContent = '';
+                el.style.color = '';
+            });
+            document.querySelectorAll('.feedback').forEach(el => {
+                el.textContent = '';
+                el.className = 'feedback';
+            });
+        }
+
+        /* ================================================================
+           PROGRESS CALCULATION
+           ================================================================ */
+        function studentSummary(name) {
+            const rec = progressData[name] || createStudentRecord();
+            const ids = Object.keys(exerciseData);
+            let earned = 0, possible = 0, done = 0, totalAttempts = 0;
+            ids.forEach(id => {
+                const total = exerciseData[id].length;
+                possible += total;
+                const e = rec.exercises[id];
+                if (e && e.attempts > 0) {
+                    earned += (e.best || 0);
+                    done++;
+                    totalAttempts += (e.attempts || 0);
+                }
+            });
+            return {
+                earned,
+                possible,
+                done,
+                totalAttempts,
+                totalExercises: ids.length,
+                pct: possible ? Math.round((earned / possible) * 100) : 0
+            };
+        }
+
+        function recordResult(id, correct, total) {
+            if (!currentStudent) return;
+            const rec = progressData[currentStudent];
+            if (!rec.exercises[id]) {
+                rec.exercises[id] = { attempts: 0, best: 0, last: 0, total: total, usedReveal: false, history: [] };
+            }
+            const e = rec.exercises[id];
+            if (!Array.isArray(e.history)) e.history = [];
+
+            e.attempts = (e.attempts || 0) + 1;
+            e.last = correct;
+            e.total = total;
+            e.best = Math.max(e.best || 0, correct);
+            e.updated = Date.now();
+
+            e.history.push({ score: correct, total: total, timestamp: Date.now() });
+            if (e.history.length > MAX_HISTORY) e.history = e.history.slice(-MAX_HISTORY);
+
+            rec.lastActive = Date.now();
+            saveProgress();
+            updateStudentChip();
+        }
+
+        function markRevealUsed(id) {
+            if (!currentStudent) return;
+            const rec = progressData[currentStudent];
+            if (!rec.exercises[id]) {
+                rec.exercises[id] = { attempts: 0, best: 0, last: 0, total: exerciseData[id].length, usedReveal: false, history: [] };
+            }
+            if (!Array.isArray(rec.exercises[id].history)) rec.exercises[id].history = [];
+            rec.exercises[id].usedReveal = true;
+            rec.lastActive = Date.now();
+            saveProgress();
+        }
+
+        /* ================================================================
+           TEACHER ACCESS
+           ================================================================ */
+        function requestTeacherAccess() {
+            const inp = document.getElementById('teacherCodeInput');
+            const err = document.getElementById('teacherCodeError');
+            inp.value = '';
+            err.textContent = '';
+            err.style.display = 'none';
+            document.getElementById('teacherCodeModal').classList.add('open');
+            setTimeout(() => inp.focus(), 60);
+        }
+
+        function closeTeacherCode() {
+            document.getElementById('teacherCodeModal').classList.remove('open');
+        }
+
+        function submitTeacherCode() {
+            const inp = document.getElementById('teacherCodeInput');
+            const err = document.getElementById('teacherCodeError');
+
+            if (normalizeCode(inp.value) !== normalizeCode(TEACHER_CODE)) {
+                err.textContent = '❌ Incorrect teacher code. Access denied.';
+                err.style.display = 'block';
+                inp.value = '';
+                inp.focus();
+                return;
+            }
+
+            err.style.display = 'none';
+            closeTeacherCode();
+            openTeacher();
+        }
+
+        /* ================================================================
+           TEACHER DASHBOARD
+           ================================================================ */
+        function openTeacher() {
+            renderTeacher();
+            document.getElementById('teacherModal').classList.add('open');
+        }
+
+        function closeTeacher() {
+            document.getElementById('teacherModal').classList.remove('open');
+        }
+
+        function formatDate(ts) {
+            if (!ts) return 'Not yet';
+            try {
+                const d = new Date(ts);
+                return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) +
+                       ' · ' +
+                       d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+            } catch (err) {
+                return '—';
+            }
+        }
+
+        function formatTimeShort(ts) {
+            try {
+                const d = new Date(ts);
+                return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' ' +
+                       d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+            } catch (err) {
+                return '—';
+            }
+        }
+
+        function getAllAttempts() {
+            const all = [];
+            DEFAULT_STUDENTS.forEach(name => {
+                const rec = progressData[name];
+                if (!rec || !rec.exercises) return;
+                Object.keys(rec.exercises).forEach(id => {
+                    const e = rec.exercises[id];
+                    if (Array.isArray(e.history)) {
+                        e.history.forEach(h => {
+                            if (h && typeof h.score === 'number' && typeof h.timestamp === 'number') {
+                                all.push({
+                                    student: name,
+                                    exerciseId: id,
+                                    score: h.score,
+                                    total: h.total || 0,
+                                    timestamp: h.timestamp
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+            all.sort((a, b) => b.timestamp - a.timestamp);
+            return all;
+        }
+
+        function renderTeacher() {
+            const wrap = document.getElementById('teacherContent');
+            if (!wrap) return;
+
+            /* -------- Summary cards -------- */
+            let html = '<div class="teacher-summary">';
+            DEFAULT_STUDENTS.forEach((name, i) => {
+                const s = studentSummary(name);
+                const rec = progressData[name] || createStudentRecord();
+                html +=
+                    '<div class="tsum-card">' +
+                        '<div class="tsum-avatar" style="background:' + AVATAR_GRADIENTS[i % AVATAR_GRADIENTS.length] + '">' +
+                            name.charAt(0).toUpperCase() +
+                        '</div>' +
+                        '<div class="tsum-info">' +
+                            '<div class="tsum-name">' + name + '</div>' +
+                            '<div class="tsum-score">' + s.earned + ' / ' + s.possible + ' points · ' + s.pct + '%</div>' +
+                            '<div class="tsum-meta"><strong>' + s.done + '</strong> of ' + s.totalExercises + ' exercises attempted</div>' +
+                            '<div class="tsum-meta"><strong>' + s.totalAttempts + '</strong> total attempts</div>' +
+                            '<div class="tsum-meta"><strong>' + (rec.sessions || 0) + '</strong> practice sessions (logins)</div>' +
+                            '<div class="tsum-meta">Last active: ' + formatDate(rec.lastActive) + '</div>' +
+                            '<button class="tool-btn" onclick="resetStudent(\'' + name + '\')">↺ Reset ' + name + '</button>' +
+                        '</div>' +
+                    '</div>';
+            });
+            html += '</div>';
+
+            /* -------- Per-exercise table -------- */
+            html += '<div class="table-scroll"><table class="teacher-table"><thead><tr><th>Exercise</th>';
+            DEFAULT_STUDENTS.forEach(n => { html += '<th>' + n + '</th>'; });
+            html += '</tr></thead><tbody>';
+
+            Object.keys(exerciseData).forEach(id => {
+                html += '<tr><td>' + (EXERCISE_LABELS[id] || id) + '</td>';
+                DEFAULT_STUDENTS.forEach(n => {
+                    const e = progressData[n] && progressData[n].exercises ? progressData[n].exercises[id] : null;
+                    if (!e || !e.attempts) {
+                        const viewed = (e && e.usedReveal) ? '👁️ viewed' : '—';
+                        html += '<td class="cell-empty">' + viewed + '</td>';
+                    } else {
+                        const best = typeof e.best === 'number' ? e.best : 0;
+                        const total = e.total || 1;
+                        const full = (best === total) ? ' full' : '';
+                        const flag = e.usedReveal ? ' 🔓' : '';
+
+                        let recent = '';
+                        let fullHistory = '';
+                        if (Array.isArray(e.history) && e.history.length > 0) {
+                            recent = e.history.slice(-5).map(h => h.score).join(', ');
+                            fullHistory = e.history.map(h => h.score + '/' + h.total).join(', ');
+                        }
+
+                        html += '<td class="cell-score">' +
+                            '<span class="cell-best' + full + '">' + best + '/' + total + flag + '</span>' +
+                            '<span class="cell-att">' + e.attempts + ' attempt' + (e.attempts === 1 ? '' : 's') + '</span>' +
+                            (recent ? '<span class="cell-history" title="All scores: ' + fullHistory + '">' + recent + '</span>' : '') +
+                        '</td>';
+                    }
+                });
+                html += '</tr>';
+            });
+
+            html += '</tbody></table></div>';
+
+            /* -------- Recent activity feed -------- */
+            html += '<div class="activity-section">';
+            html += '<h3>🕒 Recent Activity — last 20 attempts</h3>';
+            const allAttempts = getAllAttempts();
+            if (allAttempts.length === 0) {
+                html += '<div class="activity-feed"><div class="activity-empty">No attempts recorded yet. Students need to log in, answer questions, and click “Check Answers”.</div></div>';
+            } else {
+                html += '<div class="activity-feed">';
+                allAttempts.slice(0, 20).forEach(a => {
+                    const studentIndex = DEFAULT_STUDENTS.indexOf(a.student);
+                    const color = AVATAR_GRADIENTS[studentIndex % AVATAR_GRADIENTS.length];
+                    const label = EXERCISE_LABELS[a.exerciseId] || a.exerciseId;
+                    html += '<div class="activity-item">' +
+                        '<span class="activity-dot" style="background:' + color + '"></span>' +
+                        '<span class="activity-text"><strong>' + a.student + '</strong> · ' + label + ' · <strong>' + a.score + '/' + a.total + '</strong></span>' +
+                        '<span class="activity-time">' + formatTimeShort(a.timestamp) + '</span>' +
+                    '</div>';
+                });
+                html += '</div>';
+            }
+            html += '</div>';
+
+            wrap.innerHTML = html;
+        }
+
+        function resetStudent(name) {
+            if (!DEFAULT_STUDENTS.includes(name)) return;
+            if (!confirm('Reset all recorded progress for ' + name + '?\n\nThis clears every attempt, score, and session for this student.')) return;
+            progressData[name] = createStudentRecord();
+            saveProgress();
+            renderTeacher();
+            renderStudentButtons();
+            updateStudentChip();
+            showToast('Progress reset for ' + name + '.', 'warn');
+        }
+
+        function resetAllProgress() {
+            if (!confirm('Reset the progress of ALL students?\n\nThis cannot be undone.')) return;
+            DEFAULT_STUDENTS.forEach(n => { progressData[n] = createStudentRecord(); });
+            saveProgress();
+            renderTeacher();
+            renderStudentButtons();
+            updateStudentChip();
+            showToast('All student progress has been reset.', 'warn');
+        }
+
+        /* ================================================================
+           TAB SWITCHING
+           ================================================================ */
+        const catBtns = document.querySelectorAll('.cat-btn');
+        const panels = document.querySelectorAll('.panel');
+        catBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                catBtns.forEach(b => b.classList.remove('active'));
+                panels.forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                const panel = document.getElementById('panel-' + btn.dataset.cat);
+                if (panel) panel.classList.add('active');
+            });
+        });
+
+        /* ================================================================
+           GLOBAL TOGGLES
+           ================================================================ */
+        function toggleAllExplanations() {
+            explanationsVisible = !explanationsVisible;
+            document.querySelectorAll('.rule-box, .card h3, .card table, .card > p').forEach(el => {
+                if (el.closest('.exercise-block')) return;
+                el.style.display = explanationsVisible ? '' : 'none';
+            });
+            const btn = document.getElementById('toggleExplainBtn');
+            if (btn) btn.textContent = explanationsVisible ? '🙈 Hide Explanations' : '👁️ Show Explanations';
+        }
+
+        /* ================================================================
+           ZOOM & FULLSCREEN
+           ================================================================ */
+        let zoomLevel = 1;
+        function zoomGame(factor) {
+            zoomLevel = Math.min(Math.max(zoomLevel * factor, 0.8), 1.5);
+            const shell = document.getElementById('gameShell');
+            shell.style.transform = 'scale(' + zoomLevel + ')';
+            shell.style.transformOrigin = 'top center';
+        }
+        function resetZoom() {
+            zoomLevel = 1;
+            document.getElementById('gameShell').style.transform = 'scale(1)';
+        }
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => showToast('Fullscreen is not supported here.', 'warn'));
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        /* ================================================================
+           EXERCISE DATA (VERIFIED)
+           ================================================================ */
+
+        /* ---------- FOOD CONTAINERS ---------- */
+        const foodP1 = [
+            { label: 'honey', answer: 'jar', options: ['jar', 'carton', 'loaf'], hint: 'Honey is sticky and sweet; it comes in a glass container with a lid.', explanation: 'A jar is the correct container for honey, jam, and pickles.' },
+            { label: 'cola', answer: 'can', options: ['can', 'jar', 'bag'], hint: 'Cola is a fizzy drink; it often comes in a metal container.', explanation: 'A can (or a bottle) is used for cola. A jar is for jam, and a bag is for rice.' },
+            { label: 'flour', answer: 'bag', options: ['bag', 'tube', 'glass'], hint: 'Flour is a dry powder used in baking.', explanation: 'Flour is sold in a large bag or sack. A tube is for toothpaste, and a glass is for water.' },
+            { label: 'bread', answer: 'loaf', options: ['loaf', 'box', 'bottle'], hint: 'Bread is baked in a long, shaped form.', explanation: 'A loaf is a shaped mass of bread. A box is for chocolates, and a bottle is for liquids.' },
+            { label: 'orange juice', answer: 'carton', options: ['carton', 'can', 'packet'], hint: 'Juice is a liquid; it often comes in a cardboard container.', explanation: 'A carton is the usual container for juice and milk. A packet is for crisps, and a can is for soup.' },
+            { label: 'toothpaste', answer: 'tube', options: ['tube', 'jar', 'loaf'], hint: 'Toothpaste is a thick paste squeezed out of a container.', explanation: 'A tube is designed for toothpaste, cream, and ointment. A jar is for jam, and a loaf is for bread.' }
+        ];
+
+        const foodP2 = [
+            { label: 'She opened a <strong>jar</strong> of jam.', answer: 'C', options: ['C', 'F'], hint: 'A jar is a container. Jam is the food inside.', explanation: 'Jar is a container (C). Jam is the food.' },
+            { label: 'He ate a <strong>loaf</strong> of bread.', answer: 'C', options: ['C', 'F'], hint: 'A loaf is a shaped container/form for bread.', explanation: 'Loaf is a container (C). Bread is the food.' },
+            { label: 'We need a <strong>carton</strong> of milk.', answer: 'C', options: ['C', 'F'], hint: 'A carton is a cardboard container for liquids.', explanation: 'Carton is a container (C). Milk is the food.' },
+            { label: 'The <strong>apple</strong> is red.', answer: 'F', options: ['C', 'F'], hint: 'An apple is something you eat.', explanation: 'Apple is a food (F), not a container.' },
+            { label: 'A <strong>can</strong> of soup.', answer: 'C', options: ['C', 'F'], hint: 'A can is a metal container.', explanation: 'Can is a container (C). Soup is the food.' },
+            { label: 'The <strong>cheese</strong> is tasty.', answer: 'F', options: ['C', 'F'], hint: 'Cheese is a dairy product you eat.', explanation: 'Cheese is a food (F), not a container.' }
+        ];
+
+        /* ---------- ANIMAL FAMILIES ---------- */
+        const animalsP1 = [
+            { label: 'Duck — Male: ______', answer: 'Drake', options: ['Drake', 'Rooster', 'Stallion'], hint: 'Think of the word "drake" — it is also used in the name "mandarin duck."', explanation: 'The male duck is a drake. A rooster is a male chicken, and a stallion is a male horse.' },
+            { label: 'Pig — Female: ______', answer: 'Sow', options: ['Sow', 'Mare', 'Queen'], hint: 'This word rhymes with "cow" and is also used for a female bear.', explanation: 'A female pig is a sow. A mare is a female horse, and a queen is a female cat.' },
+            { label: 'Lion — Female: ______', answer: 'Lioness', options: ['Lioness', 'Ewe', 'Hen'], hint: 'Add the suffix "-ess" to the animal name.', explanation: 'A female lion is a lioness. A ewe is a female sheep, and a hen is a female chicken.' },
+            { label: 'Dog — Baby: ______', answer: 'Puppy', options: ['Puppy', 'Kitten', 'Calf'], hint: 'This is a very common word for a baby dog.', explanation: 'A baby dog is a puppy. A kitten is a baby cat, and a calf is a baby cow.' },
+            { label: 'Whale — Baby: ______', answer: 'Calf', options: ['Calf', 'Foal', 'Lamb'], hint: 'This word is also used for a baby cow and a baby elephant.', explanation: 'A baby whale is a calf. A foal is a baby horse, and a lamb is a baby sheep.' },
+            { label: 'Sheep — Male: ______', answer: 'Ram', options: ['Ram', 'Bull', 'Boar'], hint: 'This is also the name of a male goat and a device for hitting things.', explanation: 'A male sheep is a ram. A bull is a male cow, and a boar is a male pig.' }
+        ];
+
+        const animalsP2 = [
+            { label: 'A baby cow is called a cub.', answer: 'F', options: ['T', 'F'], hint: 'A cub belongs to lions, bears, and foxes.', explanation: 'False. A baby cow is a calf. A cub is a baby lion, bear, or fox.' },
+            { label: 'A male bee is called a drone.', answer: 'T', options: ['T', 'F'], hint: 'Male bees do not have stingers and their main job is to mate with the queen.', explanation: 'True. A male bee is a drone.' },
+            { label: 'A baby sheep is a lamb.', answer: 'T', options: ['T', 'F'], hint: 'This word is also used for the meat of a young sheep.', explanation: 'True. A baby sheep is a lamb.' },
+            { label: 'A female horse is a mare.', answer: 'T', options: ['T', 'F'], hint: 'A male horse is a stallion.', explanation: 'True. A female horse is a mare.' },
+            { label: 'A baby cat is a puppy.', answer: 'F', options: ['T', 'F'], hint: 'Puppies are baby dogs.', explanation: 'False. A baby cat is a kitten. A puppy is a baby dog.' },
+            { label: 'A male chicken is a hen.', answer: 'F', options: ['T', 'F'], hint: 'Hens are female; males are roosters.', explanation: 'False. A male chicken is a rooster. A hen is a female chicken.' }
+        ];
+
+        /* ---------- VOWELS ---------- */
+        const vowelsP1 = [
+            { label: '<strong>c</strong>a<strong>p</strong> (short a)', answer: 'S', options: ['S', 'L'], hint: 'The vowel is followed by one consonant and no silent e.', explanation: 'CAP has a short a sound. No magic e is present.' },
+            { label: '<strong>c</strong>a<strong>p</strong>e (long a)', answer: 'L', options: ['S', 'L'], hint: 'The silent e at the end makes the a long.', explanation: 'CAPE has a long a sound because of the magic e.[reference:35]' },
+            { label: '<strong>t</strong>u<strong>b</strong> (short u)', answer: 'S', options: ['S', 'L'], hint: 'No silent e at the end.', explanation: 'TUB has a short u sound.' },
+            { label: '<strong>t</strong>u<strong>b</strong>e (long u)', answer: 'L', options: ['S', 'L'], hint: 'The silent e makes the u long.', explanation: 'TUBE has a long u sound because of the magic e.[reference:36]' },
+            { label: '<strong>n</strong>o<strong>t</strong> (short o)', answer: 'S', options: ['S', 'L'], hint: 'No silent e at the end.', explanation: 'NOT has a short o sound.' },
+            { label: '<strong>n</strong>o<strong>t</strong>e (long o)', answer: 'L', options: ['S', 'L'], hint: 'The silent e makes the o long.', explanation: 'NOTE has a long o sound because of the magic e.[reference:37]' },
+            { label: '<strong>p</strong>e<strong>t</strong> (short e)', answer: 'S', options: ['S', 'L'], hint: 'No silent e at the end.', explanation: 'PET has a short e sound.' },
+            { label: '<strong>P</strong>e<strong>t</strong>e (long e)', answer: 'L', options: ['S', 'L'], hint: 'The silent e makes the e long.', explanation: 'PETE has a long e sound because of the magic e.[reference:38]' }
+        ];
+
+        const vowelsP2 = [
+            { label: 'hop + e = ______', answer: 'hope', hint: 'The o becomes long: /hoʊp/.', explanation: 'HOP + E = HOPE. The silent e makes the o long.[reference:39]' },
+            { label: 'cut + e = ______', answer: 'cute', hint: 'The u becomes long: /kjuːt/.', explanation: 'CUT + E = CUTE. The silent e makes the u long.[reference:40]' },
+            { label: 'kit + e = ______', answer: 'kite', hint: 'The i becomes long: /kaɪt/.', explanation: 'KIT + E = KITE. The silent e makes the i long.[reference:41]' },
+            { label: 'man + e = ______', answer: 'mane', hint: 'The a becomes long: /meɪn/.', explanation: 'MAN + E = MANE. The silent e makes the a long.[reference:42]' },
+            { label: 'tap + e = ______', answer: 'tape', hint: 'The a becomes long: /teɪp/.', explanation: 'TAP + E = TAPE. The silent e makes the a long.[reference:43]' },
+            { label: 'tub + e = ______', answer: 'tube', hint: 'The u becomes long: /tjuːb/.', explanation: 'TUB + E = TUBE. The silent e makes the u long.[reference:44]' }
+        ];
+
+        /* ---------- NOUNS ---------- */
+        const nounsP1 = [
+            { label: 'Book', answer: 'C', options: ['C', 'U'], hint: 'You can say "one book, two books."', explanation: 'Book is countable (C).' },
+            { label: 'Milk', answer: 'U', options: ['C', 'U'], hint: 'You cannot say "two milks." You say "two glasses of milk."', explanation: 'Milk is uncountable (U).' },
+            { label: 'Chair', answer: 'C', options: ['C', 'U'], hint: 'You can count chairs in a room.', explanation: 'Chair is countable (C).' },
+            { label: 'Sugar', answer: 'U', options: ['C', 'U'], hint: 'You cannot count individual grains of sugar easily.', explanation: 'Sugar is uncountable (U).' },
+            { label: 'Coin', answer: 'C', options: ['C', 'U'], hint: 'You can count coins in your pocket.', explanation: 'Coin is countable (C).' },
+            { label: 'Sand', answer: 'U', options: ['C', 'U'], hint: 'Sand is a mass of tiny grains.', explanation: 'Sand is uncountable (U).' },
+            { label: 'Idea', answer: 'C', options: ['C', 'U'], hint: 'You can have one idea, two ideas.', explanation: 'Idea is countable (C).' },
+            { label: 'Information', answer: 'U', options: ['C', 'U'], hint: 'You cannot say "two informations."', explanation: 'Information is uncountable (U).' },
+            { label: 'Song', answer: 'C', options: ['C', 'U'], hint: 'You can count songs on a playlist.', explanation: 'Song is countable (C).' },
+            { label: 'Music', answer: 'U', options: ['C', 'U'], hint: 'Music is a general concept, not counted one by one.', explanation: 'Music is uncountable (U).' }
+        ];
+
+        const nounsP2 = [
+            { label: 'How ______ money do you have?', answer: 'much', options: ['much', 'many', 'some', 'any'], hint: 'Money is uncountable.', explanation: 'Use MUCH with uncountable nouns like money.' },
+            { label: 'There are ______ students in the classroom.', answer: 'many', options: ['much', 'many', 'some', 'any'], hint: 'Students are countable.', explanation: 'Use MANY with countable plural nouns like students.' },
+            { label: 'Would you like ______ tea?', answer: 'some', options: ['much', 'many', 'some', 'any'], hint: 'This is an offer; we use "some" in offers.', explanation: 'Use SOME in positive sentences and offers.' },
+            { label: 'I don’t have ______ time today.', answer: 'any', options: ['much', 'many', 'some', 'any'], hint: 'This is a negative sentence.', explanation: 'Use ANY in negative sentences.' },
+            { label: 'She bought ______ beautiful flowers.', answer: 'some', options: ['much', 'many', 'some', 'any'], hint: 'This is a positive sentence.', explanation: 'Use SOME in positive sentences.' },
+            { label: 'How ______ apples are in the basket?', answer: 'many', options: ['much', 'many', 'some', 'any'], hint: 'Apples are countable.', explanation: 'Use MANY with countable nouns in questions.' },
+            { label: 'There isn’t ______ milk left.', answer: 'any', options: ['much', 'many', 'some', 'any'], hint: 'This is a negative sentence.', explanation: 'Use ANY in negative sentences.' },
+            { label: 'I need ______ sugar for my coffee.', answer: 'some', options: ['much', 'many', 'some', 'any'], hint: 'This is a positive sentence.', explanation: 'Use SOME in positive sentences.' }
+        ];
+
+        /* ---------- IDIOMS ---------- */
+        const idiomsP1 = [
+            { label: 'You finish a puzzle in 30 seconds.', answer: 'Piece of cake', options: ['Piece of cake', 'Couch potato', 'Pig out', 'Chicken out'], hint: 'The task was very easy.', explanation: 'A "piece of cake" means something very easy.[reference:57]' },
+            { label: 'Your friend is scared to ride a rollercoaster and says “no.”', answer: 'Chicken out', options: ['Piece of cake', 'Couch potato', 'Pig out', 'Chicken out'], hint: 'The friend decided not to do something because of fear.', explanation: 'To "chicken out" means to decide not to do something because you are scared.' },
+            { label: 'Your cousin sits on the sofa eating chips and watching movies all weekend.', answer: 'Couch potato', options: ['Piece of cake', 'Couch potato', 'Pig out', 'Chicken out'], hint: 'This person is lazy and watches a lot of TV.', explanation: 'A "couch potato" is a lazy person who sits and watches TV all day.[reference:58]' },
+            { label: 'You eat five slices of pizza at a party.', answer: 'Pig out', options: ['Piece of cake', 'Couch potato', 'Pig out', 'Chicken out'], hint: 'You ate a very large amount of food.', explanation: 'To "pig out" means to eat a very large amount of food.' }
+        ];
+
+        const idiomsP2 = [
+            { label: 'He was so hungry that he managed to ______ three burgers.', answer: 'wolf down', options: ['wolf down', 'monkey around', 'go bananas', 'chicken out'], hint: 'He ate very quickly and hungrily.', explanation: 'To "wolf down" means to eat very quickly and hungrily.' },
+            { label: 'Don’t ______ with your food; eat it properly!', answer: 'monkey around', options: ['wolf down', 'monkey around', 'go bananas', 'chicken out'], hint: 'This means to play around instead of being serious.', explanation: 'To "monkey around" means to play around or behave silly.' },
+            { label: 'The kids ______ when they saw the ice cream.', answer: 'go bananas', options: ['wolf down', 'monkey around', 'go bananas', 'chicken out'], hint: 'They became very excited.', explanation: 'To "go bananas" means to become very excited or crazy.' },
+            { label: 'Stay away from him; he is a ______.', answer: 'bad egg', options: ['bad egg', 'couch potato', 'piece of cake', 'pig out'], hint: 'This describes a dishonest or unpleasant person.', explanation: 'A "bad egg" is a dishonest or unpleasant person.' },
+            { label: 'The exam was so easy; it was a ______.', answer: 'piece of cake', options: ['bad egg', 'couch potato', 'piece of cake', 'pig out'], hint: 'It was very easy.', explanation: 'A "piece of cake" means something very easy.[reference:59]' }
+        ];
+
+        /* ---------- ANIMAL CLASSIFICATION ---------- */
+        const classP1 = [
+            { label: 'Dolphin', answer: 'Mammal', options: ['Mammal', 'Insect', 'Bird', 'Reptile', 'Fish'], hint: 'Dolphins breathe air and feed their babies milk.', explanation: 'Dolphins are mammals, not fish. They breathe air and feed their young milk.[reference:60]' },
+            { label: 'Ant', answer: 'Insect', options: ['Mammal', 'Insect', 'Bird', 'Reptile', 'Fish'], hint: 'Ants have six legs and three body parts.', explanation: 'Ants are insects.[reference:61]' },
+            { label: 'Eagle', answer: 'Bird', options: ['Mammal', 'Insect', 'Bird', 'Reptile', 'Fish'], hint: 'Eagles have feathers and a beak.', explanation: 'Eagles are birds.[reference:62]' },
+            { label: 'Snake', answer: 'Reptile', options: ['Mammal', 'Insect', 'Bird', 'Reptile', 'Fish'], hint: 'Snakes have dry, scaly skin.', explanation: 'Snakes are reptiles.[reference:63]' },
+            { label: 'Bat', answer: 'Mammal', options: ['Mammal', 'Insect', 'Bird', 'Reptile', 'Fish'], hint: 'Bats have fur and feed their babies milk.', explanation: 'Bats are mammals, not birds.[reference:64]' },
+            { label: 'Bee', answer: 'Insect', options: ['Mammal', 'Insect', 'Bird', 'Reptile', 'Fish'], hint: 'Bees have six legs and three body parts.', explanation: 'Bees are insects.[reference:65]' },
+            { label: 'Penguin', answer: 'Bird', options: ['Mammal', 'Insect', 'Bird', 'Reptile', 'Fish'], hint: 'Penguins have feathers, even though they cannot fly.', explanation: 'Penguins are birds.[reference:66]' },
+            { label: 'Shark', answer: 'Fish', options: ['Mammal', 'Insect', 'Bird', 'Reptile', 'Fish'], hint: 'Sharks breathe through gills and have fins.', explanation: 'Sharks are fish.[reference:67]' }
+        ];
+
+        const classP2 = [
+            { label: 'Whales lay eggs like birds.', answer: 'F', options: ['T', 'F'], hint: 'Whales are mammals; they give birth to live young.', explanation: 'False. Whales are mammals and give birth to live young, not eggs.[reference:68]' },
+            { label: 'Spiders are insects.', answer: 'F', options: ['T', 'F'], hint: 'Insects have six legs; spiders have eight.', explanation: 'False. Spiders are arachnids, not insects. Insects have six legs.[reference:69]' },
+            { label: 'Penguins are birds.', answer: 'T', options: ['T', 'F'], hint: 'They have feathers and lay eggs.', explanation: 'True. Penguins are birds.[reference:70]' },
+            { label: 'Bats are mammals.', answer: 'T', options: ['T', 'F'], hint: 'They have fur and produce milk.', explanation: 'True. Bats are mammals.[reference:71]' },
+            { label: 'A whale is a fish.', answer: 'F', options: ['T', 'F'], hint: 'Whales breathe air and feed their babies milk.', explanation: 'False. A whale is a mammal, not a fish.[reference:72]' },
+            { label: 'Butterflies are insects.', answer: 'T', options: ['T', 'F'], hint: 'They have six legs and three body parts.', explanation: 'True. Butterflies are insects.[reference:73]' }
+        ];
+
+        /* ---------- READING ---------- */
+        const readingP1 = [
+            { label: 'What food containers are mentioned?', answer: 'loaf and carton', options: ['loaf and carton', 'jar and can', 'bag and bottle'], hint: 'Look for the words that describe how bread and juice are packed.', explanation: 'The passage mentions a "loaf" of bread and a "carton" of juice.' },
+            { label: '“Wolfed down” means…', answer: 'ate very quickly', options: ['ate very quickly', 'cooked slowly', 'refused to eat'], hint: 'The family was "so hungry."', explanation: 'To "wolf down" means to eat very quickly and hungrily.' },
+            { label: 'Why did they feel like couch potatoes?', answer: 'They were full and wanted to relax', options: ['They were full and wanted to relax', 'They wanted to exercise', 'They were scared of the lion'], hint: 'They had just eaten a big lunch.', explanation: 'They felt full and lazy after eating, so they sat on a bench.' },
+            { label: 'Which is an uncountable noun from the text?', answer: 'bread', options: ['bread', 'apples', 'monkeys'], hint: 'You cannot say "two breads."', explanation: 'Bread is uncountable. Apples and monkeys are countable.' },
+            { label: 'Which is a countable noun from the text?', answer: 'sandwiches', options: ['sandwiches', 'juice', 'water'], hint: 'You can count sandwiches.', explanation: 'Sandwiches are countable. Juice and water are uncountable.' }
+        ];
+
+        const readingP2 = [
+            { label: 'The family packed a loaf of bread. This tells us they planned to…', answer: 'eat sandwiches', options: ['eat sandwiches', 'feed the monkeys', 'sell the bread'], hint: 'They later "wolfed down our sandwiches."', explanation: 'They packed bread to make sandwiches for lunch.' },
+            { label: '“The lion looked fierce, but he was actually sleeping.” This suggests the lion was…', answer: 'not dangerous at that moment', options: ['not dangerous at that moment', 'very hungry', 'angry'], hint: 'Sleeping animals are usually not active.', explanation: 'Even though the lion looked fierce, he was asleep and therefore not dangerous at that moment.' },
+            { label: 'The duck “ducked out.” This means the duck…', answer: 'left quickly', options: ['left quickly', 'quacked loudly', 'swam slowly'], hint: 'The phrase "duck out" means to leave quietly or suddenly.', explanation: 'To "duck out" means to leave quickly and quietly.' },
+            { label: 'The family felt like couch potatoes because they…', answer: 'sat and relaxed after eating', options: ['sat and relaxed after eating', 'ran around the zoo', 'watched TV at home'], hint: 'They "sat on a bench."', explanation: 'A couch potato is a lazy person who sits and relaxes. They did this after lunch.[reference:75]' }
+        ];
+
+        /* ---------- DIALOGUE ---------- */
+        const dialogueP1 = [
+            { label: 'You want to order the pasta politely. You say:', answer: 'I would like the pasta, please.', options: ['I would like the pasta, please.', 'Give me pasta.', 'Pasta!'], hint: 'Use "I would like" for polite ordering.', explanation: '"I would like the pasta, please" is the polite form.' },
+            { label: 'You want a drink with a container word. You say:', answer: 'A glass of orange juice, please.', options: ['A glass of orange juice, please.', 'Orange juice.', 'I want juice now.'], hint: 'Use "a glass of" for drinks.', explanation: '"A glass of orange juice, please" uses a container word and is polite.' },
+            { label: 'The waiter asks about dessert. You refuse politely and ask for the bill:', answer: 'No, thank you. Just the bill, please.', options: ['No, thank you. Just the bill, please.', 'No dessert. Bill.', 'I don’t want anything.'], hint: 'Say "No, thank you" and then ask for the bill.', explanation: '"No, thank you. Just the bill, please" is polite and clear.' }
+        ];
+
+        const dialogueP2 = [
+            { label: 'Waiter: Are you ready to ______?', answer: 'order', hint: 'The waiter is asking if you are ready to ask for your food.', explanation: 'The phrase is "Are you ready to order?"' },
+            { label: 'Customer: I ______ like the grilled chicken.', answer: 'would', hint: 'Use "would like" for polite requests.', explanation: 'The polite phrase is "I would like."' },
+            { label: 'Waiter: Would you like anything to ______?', answer: 'drink', hint: 'The waiter is asking about beverages.', explanation: 'The phrase is "anything to drink."' },
+            { label: 'Customer: A ______ of water, please.', answer: 'glass', hint: 'Use a container word for water.', explanation: 'A "glass of water" is a common container phrase.' },
+            { label: 'Waiter: Would you like to see the ______ menu?', answer: 'dessert', hint: 'This is the sweet course after the main meal.', explanation: 'The phrase is "the dessert menu."' }
+        ];
+
+        /* ================================================================
+           EXERCISE DATA MAP + LABELS
+           ================================================================ */
+        const exerciseData = {
+            'food-p1': foodP1, 'food-p2': foodP2,
+            'animals-p1': animalsP1, 'animals-p2': animalsP2,
+            'vowels-p1': vowelsP1, 'vowels-p2': vowelsP2,
+            'nouns-p1': nounsP1, 'nouns-p2': nounsP2,
+            'idioms-p1': idiomsP1, 'idioms-p2': idiomsP2,
+            'class-p1': classP1, 'class-p2': classP2,
+            'reading-p1': readingP1, 'reading-p2': readingP2,
+            'dialogue-p1': dialogueP1, 'dialogue-p2': dialogueP2
+        };
+
+        const EXERCISE_LABELS = {
+            'food-p1': '🥛 Food · Practice 1 — Containers',
+            'food-p2': '🥛 Food · Practice 2 — Container or Food',
+            'animals-p1': '🐴 Animals · Practice 1 — Family Words',
+            'animals-p2': '🐴 Animals · Practice 2 — True / False',
+            'vowels-p1': '🔤 Vowels · Practice 1 — Short or Long',
+            'vowels-p2': '🔤 Vowels · Practice 2 — Magic E',
+            'nouns-p1': '📦 Nouns · Practice 1 — C or U',
+            'nouns-p2': '📦 Nouns · Practice 2 — Quantifiers',
+            'idioms-p1': '🎭 Idioms · Practice 1 — Match',
+            'idioms-p2': '🎭 Idioms · Practice 2 — Choose',
+            'class-p1': '🦁 Classification · Practice 1',
+            'class-p2': '🦁 Classification · Practice 2',
+            'reading-p1': '📖 Reading · Practice 1',
+            'reading-p2': '📖 Reading · Practice 2',
+            'dialogue-p1': '🍽️ Dialogue · Practice 1',
+            'dialogue-p2': '🍽️ Dialogue · Practice 2'
+        };
+
+        /* ================================================================
+           BUILD ALL EXERCISES
+           ================================================================ */
+        function buildAllExercises() {
+            Object.keys(exerciseData).forEach(id => {
+                const items = exerciseData[id];
+                const container = document.getElementById(id);
+                if (!container) return;
+                container.innerHTML = '';
+
+                items.forEach((item, index) => {
+                    const row = document.createElement('div');
+                    row.className = 'q-row';
+                    row.dataset.index = index;
+
+                    const label = document.createElement('label');
+                    label.innerHTML = (index + 1) + '. ' + item.label;
+
+                    let inputEl;
+                    if (item.options) {
+                        inputEl = document.createElement('select');
+                        const defaultOpt = document.createElement('option');
+                        defaultOpt.value = '';
+                        defaultOpt.textContent = '-- choose --';
+                        inputEl.appendChild(defaultOpt);
+                        item.options.forEach(opt => {
+                            const o = document.createElement('option');
+                            o.value = opt;
+                            o.textContent = opt;
+                            inputEl.appendChild(o);
+                        });
+                    } else {
+                        inputEl = document.createElement('input');
+                        inputEl.type = 'text';
+                        inputEl.placeholder = 'Type here';
+                    }
+                    inputEl.id = id + '-q' + index;
+                    inputEl.dataset.answer = item.answer;
+
+                    row.appendChild(label);
+                    row.appendChild(inputEl);
+
+                    const explDiv = document.createElement('div');
+                    explDiv.className = 'explanation-text';
+                    explDiv.id = id + '-expl' + index;
+                    row.appendChild(explDiv);
+
+                    container.appendChild(row);
+                });
+            });
+        }
+
+        /* ================================================================
+           CHECK EXERCISE — revealed answers never earn a point
+           ================================================================ */
+        function checkExercise(id) {
+            const items = exerciseData[id];
+            if (!items) return;
+
+            if (!currentStudent) {
+                showToast('Please log in with your name and code first. 👆', 'warn');
+                openStudentGate();
+                return;
+            }
+
+            let correct = 0, answered = 0, unanswered = 0, revealedCount = 0;
+
+            items.forEach((item, i) => {
+                const input = document.getElementById(id + '-q' + i);
+                const explDiv = document.getElementById(id + '-expl' + i);
+                if (!input) return;
+
+                const userVal = input.value.trim();
+                const wasRevealed = input.dataset.revealed === 'true';
+
+                if (!userVal) {
+                    unanswered++;
+                    input.style.borderColor = 'var(--border)';
+                    input.style.borderStyle = 'solid';
+                    if (explDiv) {
+                        explDiv.textContent = '✍️ No answer yet — write something and check again.';
+                        explDiv.style.color = 'var(--muted)';
+                    }
+                    return;
+                }
+
+                answered++;
+
+                /* Revealed answers are always treated as wrong — no point. */
+                if (wasRevealed) {
+                    revealedCount++;
+                    input.style.borderColor = 'var(--accent)';
+                    input.style.borderStyle = 'dashed';
+                    if (explDiv) {
+                        explDiv.textContent = '🔓 Answer was revealed — no point awarded. Correct answer: ' + item.answer + '. ' + item.explanation;
+                        explDiv.style.color = '#a06c00';
+                    }
+                    return;
+                }
+
+                if (userVal.toLowerCase() === String(item.answer).toLowerCase()) {
+                    correct++;
+                    input.style.borderColor = 'var(--success)';
+                    input.style.borderStyle = 'solid';
+                    if (explDiv) {
+                        explDiv.textContent = '✔ Correct!';
+                        explDiv.style.color = 'var(--success)';
+                    }
+                } else {
+                    input.style.borderColor = 'var(--danger)';
+                    input.style.borderStyle = 'solid';
+                    if (explDiv) {
+                        explDiv.textContent = '✘ Correct answer: ' + item.answer + '. ' + item.explanation;
+                        explDiv.style.color = 'var(--danger)';
+                    }
+                }
+            });
+
+            const fb = document.getElementById(id + '-feedback');
+            if (!fb) return;
+
+            if (answered === 0) {
+                fb.textContent = '✍️ Please answer at least one question before checking.';
+                fb.className = 'feedback partial';
+                return;
+            }
+
+            recordResult(id, correct, items.length);
+
+            let msg = '✅ ' + correct + ' / ' + items.length + ' correct.';
+            if (revealedCount > 0) msg += ' 🔓 ' + revealedCount + ' revealed (no credit).';
+            if (unanswered > 0) msg += ' ✍️ ' + unanswered + ' still empty.';
+
+            const perfect = (correct === items.length && unanswered === 0 && revealedCount === 0);
+
+            if (perfect) {
+                fb.textContent = '🎉 Perfect! All ' + items.length + ' correct — recorded for ' + currentStudent + '!';
+                fb.className = 'feedback correct';
+                showToast('🎉 Perfect score recorded for ' + currentStudent + '!', 'good');
+            } else if (revealedCount > 0) {
+                fb.textContent = msg + ' Revealed questions never earn points.';
+                fb.className = 'feedback partial';
+                showToast('🔓 Some answers were revealed — no credit for those.', 'warn');
+            } else {
+                fb.textContent = msg + ' Read the explanations below each question.';
+                fb.className = 'feedback wrong';
+                showToast(msg, '');
+            }
+        }
+
+        /* ================================================================
+           REVEAL ANSWER
+           ----------------------------------------------------------------
+           Rule: the correct answer can only be revealed AFTER the student
+           has typed something. Revealing a wrong answer permanently marks
+           that question as "revealed" for this session — it will never
+           earn a point, even if the student later types the right answer.
+           ================================================================ */
+        function revealAnswer(id) {
+            const items = exerciseData[id];
+            if (!items) return { revealed: 0, blocked: 0 };
+
+            if (!currentStudent) {
+                showToast('Please log in with your name and code first. 👆', 'warn');
+                openStudentGate();
+                return { revealed: 0, blocked: items.length };
+            }
+
+            let revealed = 0, blocked = 0;
+
+            items.forEach((item, i) => {
+                const input = document.getElementById(id + '-q' + i);
+                const explDiv = document.getElementById(id + '-expl' + i);
+                if (!input) return;
+
+                const typed = input.value.trim();
+
+                if (!typed) {
+                    blocked++;
+                    if (explDiv) {
+                        explDiv.textContent = '✍️ Write your answer first — then the correct answer can be revealed.';
+                        explDiv.style.color = 'var(--muted)';
+                    }
+                    return;
+                }
+
+                const alreadyCorrect = (typed.toLowerCase() === String(item.answer).toLowerCase());
+                const wasRevealed = input.dataset.revealed === 'true';
+
+                /* If the student already typed the correct answer on their own,
+                   just confirm it — no penalty, nothing new is revealed. */
+                if (alreadyCorrect && !wasRevealed) {
+                    input.value = item.answer;
+                    input.style.borderColor = 'var(--success)';
+                    input.style.borderStyle = 'solid';
+                    if (explDiv) {
+                        explDiv.textContent = '✔ Already correct. ' + item.explanation;
+                        explDiv.style.color = 'var(--success)';
+                    }
+                    return;
+                }
+
+                /* Otherwise: mark the question as revealed and show the answer.
+                   From now on, this question can never earn a point. */
+                revealed++;
+                input.dataset.revealed = 'true';
+                input.value = item.answer;
+                input.style.borderColor = 'var(--accent)';
+                input.style.borderStyle = 'dashed';
+                if (explDiv) {
+                    explDiv.textContent = '🔓 Answer revealed — this question will not earn a point. Correct answer: ' + item.answer + '. ' + item.explanation;
+                    explDiv.style.color = '#a06c00';
+                }
+            });
+
+            const fb = document.getElementById(id + '-feedback');
+            if (fb) {
+                if (revealed === 0 && blocked > 0) {
+                    fb.textContent = '🔒 Answer each question first. Then the correct answers can be revealed.';
+                    fb.className = 'feedback partial';
+                } else if (revealed === 0 && blocked === 0) {
+                    fb.textContent = '✔ All your typed answers were already correct — nothing needed revealing.';
+                    fb.className = 'feedback correct';
+                } else if (blocked > 0) {
+                    fb.textContent = '🔓 Revealed ' + revealed + ' answer(s) — these will not earn points. 🔒 ' + blocked + ' still waiting for your answer.';
+                    fb.className = 'feedback partial';
+                } else {
+                    fb.textContent = '🔓 Revealed ' + revealed + ' answer(s) — these will not earn points.';
+                    fb.className = 'feedback partial';
+                }
+            }
+
+            if (revealed > 0) markRevealUsed(id);
+
+            return { revealed, blocked };
+        }
+
+        /* ================================================================
+           REVEAL EVERYWHERE — still respects the “answer first” rule
+           ================================================================ */
+        function revealAllAttempted() {
+            if (!currentStudent) {
+                showToast('Please log in with your name and code first. 👆', 'warn');
+                openStudentGate();
+                return;
+            }
+
+            let totalRevealed = 0, totalBlocked = 0;
+            Object.keys(exerciseData).forEach(id => {
+                const r = revealAnswer(id);
+                totalRevealed += r.revealed;
+                totalBlocked += r.blocked;
+            });
+
+            if (totalRevealed === 0 && totalBlocked === 0) {
+                showToast('✔ All your typed answers are already correct — nothing new to reveal.', 'good');
+            } else if (totalRevealed === 0) {
+                showToast('🔒 Write your answers first — then the correct ones can be revealed.', 'warn');
+            } else if (totalBlocked > 0) {
+                showToast('🔓 Revealed ' + totalRevealed + ' · 🔒 ' + totalBlocked + ' still need your answer. Revealed answers earn no points.', 'warn');
+            } else {
+                showToast('🔓 Revealed ' + totalRevealed + ' answer(s) — these will not earn points.', 'warn');
+            }
+        }
+
+        function revealHint(id) {
+            const items = exerciseData[id];
+            if (!items) return;
+            items.forEach((item, i) => {
+                const explDiv = document.getElementById(id + '-expl' + i);
+                if (!explDiv) return;
+                explDiv.textContent = '💡 Hint: ' + item.hint;
+                explDiv.style.color = 'var(--primary-light)';
+            });
+        }
+
+        /* ================================================================
+           INITIALISE
+           ================================================================ */
+        buildAllExercises();
+        renderStudentButtons();
+        updateStudentChip();
+        document.getElementById('gateCancel').style.display = 'none';
+
+        /* Keyboard shortcuts inside code inputs */
+        document.getElementById('studentCodeInput').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                submitStudentCode();
+            }
+        });
+        document.getElementById('teacherCodeInput').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                submitTeacherCode();
+            }
+        });
+
+        /* Close modals when clicking the dark backdrop */
+        document.getElementById('teacherModal').addEventListener('click', function (e) {
+            if (e.target === this) closeTeacher();
+        });
+        document.getElementById('teacherCodeModal').addEventListener('click', function (e) {
+            if (e.target === this) closeTeacherCode();
+        });
+
+        /* Escape closes the teacher modals */
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeTeacherCode();
+                closeTeacher();
+            }
+        });
+    </script>
+
+</body>
+</html>
